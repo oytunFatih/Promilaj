@@ -262,14 +262,14 @@ class AppLocalizationsAz extends AppLocalizations {
   String get manualAbvError => 'Please enter a value between 0.1 and 96.0';
 
   @override
-  String get infoScreenNext => 'Next';
+  String get infoScreenNext => 'Davam et';
 
   @override
   String get infoButtonTitle => 'Info';
 
   @override
   String get infoPlaceholderText =>
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      'Promilaj Nədir?\\nPromilaj, Widmark düsturu ilə qan spirt səviyyənizi (BAC) hesablayan bir vasitədir. Ölkənizdəki qanuni limitləri göstərir və avtomobil sürə biləcəyiniz vaxtı təxmin edir.\\n\\nDiqqət Edin\\nSpirt içkisi içdikdən sonra avtomobil sürmə. Bu tətbiq alkomat cihazının əvəzini tutmur; yalnız təxmini hesablama təqdim edir. Əmin olmaq üçün həmişə gözləyin.\\n\\nMəkan İcazəsi\\nÖlkənizə görə qanuni spirt limitini avtomatik göstərmək üçün məkanınıza ehtiyacımız var. Məkan məlumatlarınız cihazınızda qalır, heç bir serverə göndərilmir.\\n\\nNiyə Bu Məlumatları İstəyirik?\\nÇəki, boy və içdiyiniz içkinin növü qan spirt səviyyənizə birbaşa təsir edir. Daxil etdiyiniz məlumatlar yalnız hesablama məqsədilə istifadə olunur, saxlanmır və paylaşılmır.\\n\\nBioloji Cins mi, Gender mi?\\nWidmark düsturu bədəndəki su və yağ nisbətinə əsaslandığından bioloji cinsi (kişi/qadın) soruşur. Bu sual cinsiyet kimliyinizlə əlaqəli deyil; yalnız metabolizm hesabı üçündür.\\n\\nPromil (‰) Nədir?\\nPromil mində bir deməkdir. Qanda 1‰ spirt hər 1.000 qram qanda 1 qram spirt deməkdir. Faiz əvəzinə mində istifadə olunur, çünki qan spirt səviyyələri çox kiçik miqdarlarla ifadə edilir.\\n\\nHüquqi Xəbərdarlıq\\nBu tətbiq yalnız məlumat məqsədilə nəzərdə tutulmuşdur. Təqdim olunan dəyərlər təxminidir; real qan spirt səviyyəniz fərqli ola bilər. Yaş, dərman istifadəsi, toxluq vəziyyəti və genetik amillər hər fərdin metabolizminə təsir edir. Hər hansı hüquqi qərar əvvəl sertifikatlı alkomat istifadə edin. Proqramçı və tətbiq bu məlumatlar əsasında qəbul edilən qərarlardan məsul tutula bilməz.';
 
   @override
   String get infoCloseButton => 'Close';

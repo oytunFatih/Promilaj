@@ -136,8 +136,9 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                               const SizedBox(height: 12),
                               VehiclePicker(
                                 selectedVehicle: vm.profile?.vehicleType ?? VehicleType.car,
-                                onChanged: (type) {
-                                  vm.updateProfile(vehicleType: type);
+                                onChanged: (type) async {
+                                  await vm.updateProfile(vehicleType: type);
+                                  ref.read(homeViewModelProvider).refreshActiveProfile();
                                 },
                               ),
                             ],
@@ -197,8 +198,9 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                               const SizedBox(height: 12),
                               CountryPickerList(
                                 selectedCountryCode: vm.selectedCountryCode,
-                                onCountrySelected: (code) {
-                                  vm.setCountryCode(code);
+                                onCountrySelected: (code) async {
+                                  await vm.setCountryCode(code);
+                                  ref.read(homeViewModelProvider).refreshActiveProfile();
                                 },
                               ),
                             ],

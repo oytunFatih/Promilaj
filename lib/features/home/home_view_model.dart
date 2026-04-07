@@ -72,6 +72,18 @@ class HomeViewModel extends ChangeNotifier {
   /// Eski API uyumluluğu — aktif profilin UserProfile dönüşümü
   UserProfile? get profile => activeProfile?.toUserProfile();
 
+  Future<void> refreshActiveProfile() async {
+    final updated = await _userRepo.loadSessionProfile(_activeProfileId);
+    if (updated != null) {
+      if (_activeProfileId == 'A') {
+        _profileA = updated;
+      } else {
+        _profileB = updated;
+      }
+      notifyListeners();
+    }
+  }
+
   /// Yasal limit uyarısının gösterilmesi gerekip gerekmediğini döndürür.
   /// Salt-okunur — build() içinden güvenle çağrılabilir.
   /// BUG FIX: Eski getter build() sırasında state mutasyonu yapıyordu

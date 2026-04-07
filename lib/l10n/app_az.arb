@@ -90,5 +90,9 @@
   },
   "languageLabel": "Dil",
   "countryLabel": "Ölkə",
-  "autoDetect": "🌍 Avtomatik Aşkar Et (GPS)"
+  "autoDetect": "🌍 Avtomatik Aşkar Et (GPS)",
+  "vehicleTypeSectionLabel": "Nəqliyyat Növü",
+  "vehicleMotorcycle": "Motosiklet",
+  "vehicleCar": "Avtomobil",
+  "vehicleTruckOrBus": "Yük maşını və ya Avtobus"
 }

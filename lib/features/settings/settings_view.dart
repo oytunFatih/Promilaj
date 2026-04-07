@@ -7,6 +7,9 @@ import 'package:promilaj/core/theme/widgets/glass_card.dart';
 import 'package:promilaj/data/models/user_profile.dart';
 import 'package:promilaj/features/shared/widgets/language_picker_list.dart';
 import 'package:promilaj/features/shared/widgets/country_picker_list.dart';
+import 'package:promilaj/features/shared/widgets/vehicle_picker.dart';
+import 'package:promilaj/features/shared/widgets/biological_sex_selector.dart';
+import 'package:promilaj/data/models/session_profile.dart';
 import 'package:promilaj/l10n/app_localizations.dart';
 
 /// Ayarlar ekranı — profil düzenleme ve dil seçimi.
@@ -114,32 +117,28 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                                   l10n.ageLabel, _ageController, ''),
                               const SizedBox(height: 12),
                               // Cinsiyet
-                              Row(
-                                children: [
-                                  Text(l10n.sexLabel,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium),
-                                  const Spacer(),
-                                  SegmentedButton<BiologicalSex>(
-                                    segments: [
-                                      ButtonSegment(
-                                        value: BiologicalSex.male,
-                                        label: Text(l10n.male),
-                                      ),
-                                      ButtonSegment(
-                                        value: BiologicalSex.female,
-                                        label: Text(l10n.female),
-                                      ),
-                                    ],
-                                    selected: {
-                                      vm.profile?.sex ?? BiologicalSex.male
-                                    },
-                                    onSelectionChanged: (s) {
-                                      vm.updateProfile(sex: s.first);
-                                    },
-                                  ),
-                                ],
+                              Text(l10n.sexLabel,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium),
+                              const SizedBox(height: 12),
+                              BiologicalSexSelector(
+                                selectedSex: vm.profile?.sex ?? BiologicalSex.male,
+                                onChanged: (val) {
+                                  vm.updateProfile(sex: val);
+                                },
+                              ),
+                              const SizedBox(height: 24),
+                              Text(l10n.vehicleTypeSectionLabel,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium),
+                              const SizedBox(height: 12),
+                              VehiclePicker(
+                                selectedVehicle: vm.profile?.vehicleType ?? VehicleType.car,
+                                onChanged: (type) {
+                                  vm.updateProfile(vehicleType: type);
+                                },
                               ),
                             ],
                           ),

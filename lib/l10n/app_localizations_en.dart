@@ -272,4 +272,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoCloseButton => 'Close';
+
+  @override
+  String get vehicleTypeSectionLabel => 'Vehicle Type';
+
+  @override
+  String get vehicleMotorcycle => 'Motorcycle';
+
+  @override
+  String get vehicleCar => 'Car';
+
+  @override
+  String get vehicleTruckOrBus => 'Truck or Bus';
 }

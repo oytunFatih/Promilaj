@@ -272,4 +272,16 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get infoCloseButton => 'Kapat';
+
+  @override
+  String get vehicleTypeSectionLabel => 'Araç Türü';
+
+  @override
+  String get vehicleMotorcycle => 'Motosiklet';
+
+  @override
+  String get vehicleCar => 'Otomobil';
+
+  @override
+  String get vehicleTruckOrBus => 'Kamyon veya Otobüs';
 }

@@ -97,5 +97,9 @@
   "infoScreenNext": "İleri",
   "infoButtonTitle": "Bilgi",
   "infoPlaceholderText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  "infoCloseButton": "Kapat"
+  "infoCloseButton": "Kapat",
+  "vehicleTypeSectionLabel": "Araç Türü",
+  "vehicleMotorcycle": "Motosiklet",
+  "vehicleCar": "Otomobil",
+  "vehicleTruckOrBus": "Kamyon veya Otobüs"
 }

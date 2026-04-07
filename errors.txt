@@ -1,0 +1,15 @@
+﻿Analyzing Promilaj...
+
+  error - lib\features\onboarding\onboarding_view.dart:258:38 - The getter 'vehicleTypeSectionLabel' isn't defined for the type 'AppLocalizations'. Try importing the library that defines 'vehicleTypeSectionLabel', correcting the name to the name of an existing getter, or defining a getter or field named 'vehicleTypeSectionLabel'. - undefined_getter
+  error - lib\features\profile\profile_creation_view.dart:223:38 - The getter 'vehicleTypeSectionLabel' isn't defined for the type 'AppLocalizations'. Try importing the library that defines 'vehicleTypeSectionLabel', correcting the name to the name of an existing getter, or defining a getter or field named 'vehicleTypeSectionLabel'. - undefined_getter
+  error - lib\features\settings\settings_view.dart:149:41 - The getter 'vehicleTypeSectionLabel' isn't defined for the type 'AppLocalizations'. Try importing the library that defines 'vehicleTypeSectionLabel', correcting the name to the name of an existing getter, or defining a getter or field named 'vehicleTypeSectionLabel'. - undefined_getter
+  error - lib\features\shared\widgets\vehicle_picker.dart:26:25 - The getter 'vehicleMotorcycle' isn't defined for the type 'AppLocalizations'. Try importing the library that defines 'vehicleMotorcycle', correcting the name to the name of an existing getter, or defining a getter or field named 'vehicleMotorcycle'. - undefined_getter
+  error - lib\features\shared\widgets\vehicle_picker.dart:35:25 - The getter 'vehicleCar' isn't defined for the type 'AppLocalizations'. Try importing the library that defines 'vehicleCar', correcting the name to the name of an existing getter, or defining a getter or field named 'vehicleCar'. - undefined_getter
+  error - lib\features\shared\widgets\vehicle_picker.dart:44:25 - The getter 'vehicleTruckOrBus' isn't defined for the type 'AppLocalizations'. Try importing the library that defines 'vehicleTruckOrBus', correcting the name to the name of an existing getter, or defining a getter or field named 'vehicleTruckOrBus'. - undefined_getter
+   info - lib\core\constants\constants.dart:2:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\core\theme\liquid_glass_theme.dart:42:60 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - lib\data\models\drink_type.dart:1:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\data\models\user_profile.dart:3:1 - Dangling library doc comment. Add a 'library' directive after the library comment. - dangling_library_doc_comments
+   info - lib\features\add_drink\add_drink_view.dart:632:13 - Unnecessary braces in a string interpolation. Try removing the braces. - unnecessary_brace_in_string_interps
+
+11 issues found.

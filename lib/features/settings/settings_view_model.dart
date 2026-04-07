@@ -18,8 +18,8 @@ class SettingsViewModel extends ChangeNotifier {
   SessionProfile? get profile => _profile;
   bool get isLoading => _isLoading;
   bool get isSaving => _isSaving;
-  Locale? get selectedLocale => _selectedLocale;
-  String get selectedLanguage => _profile?.selectedLanguage ?? 'en';
+  Locale? get selectedLocale => _selectedLocale ?? _profile?.selectedLocale;
+  String get selectedLanguage => _profile?.selectedLocale?.languageCode ?? 'en';
   String? get selectedCountryCode => _profile?.selectedCountryCode;
 
   /// Profil ve ayarları yükle
@@ -29,8 +29,8 @@ class SettingsViewModel extends ChangeNotifier {
       _profile = await _userRepo.loadSessionProfile('A');
 
       // Kayıtlı dili locale olarak uygula
-      if (_profile != null) {
-        _selectedLocale = Locale(_profile!.selectedLanguage);
+      if (_profile != null && _profile!.selectedLocale != null) {
+        _selectedLocale = _profile!.selectedLocale;
       }
     } catch (e) {
       debugPrint('SettingsViewModel initialize error: $e');
@@ -46,6 +46,7 @@ class SettingsViewModel extends ChangeNotifier {
     double? weightKg,
     BiologicalSex? sex,
     int? age,
+    VehicleType? vehicleType,
   }) async {
     if (_profile == null) return false;
 
@@ -53,13 +54,16 @@ class SettingsViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _profile = _profile!.copyWith(
+      _profile = _profile?.copyWith(
         heightCm: heightCm,
         weightKg: weightKg,
         sex: sex,
         age: age,
+        vehicleType: vehicleType,
       );
-      await _userRepo.saveSessionProfile(_profile!);
+      if (_profile != null) {
+        await _userRepo.saveSessionProfile(_profile!);
+      }
       return true;
     } catch (e) {
       return false;
@@ -73,7 +77,7 @@ class SettingsViewModel extends ChangeNotifier {
   Future<void> setLanguage(String langCode) async {
     _selectedLocale = Locale(langCode);
     if (_profile != null) {
-      _profile = _profile!.copyWith(selectedLanguage: langCode);
+      _profile = _profile?.copyWith(selectedLocale: _selectedLocale);
       await _userRepo.saveSessionProfile(_profile!);
     }
     notifyListeners();
@@ -82,7 +86,7 @@ class SettingsViewModel extends ChangeNotifier {
   /// Ülke kodu değiştir — null = otomatik algıla
   Future<void> setCountryCode(String? countryCode) async {
     if (_profile != null) {
-      _profile = _profile!.copyWith(selectedCountryCode: countryCode);
+      _profile = _profile?.copyWith(selectedCountryCode: countryCode);
       await _userRepo.saveSessionProfile(_profile!);
     }
     notifyListeners();

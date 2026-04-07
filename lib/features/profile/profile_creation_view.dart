@@ -6,6 +6,8 @@ import 'package:promilaj/core/theme/app_colors.dart';
 import 'package:promilaj/core/theme/widgets/glass_card.dart';
 import 'package:promilaj/data/models/user_profile.dart';
 import 'package:promilaj/l10n/app_localizations.dart';
+import 'package:promilaj/features/shared/widgets/vehicle_picker.dart';
+import 'package:promilaj/features/shared/widgets/biological_sex_selector.dart';
 
 /// Misafir profili (Profile B) oluşturma bottom sheet.
 /// Onboarding formuyla aynı alanları taşır: boy, kilo, cinsiyet, yaş.
@@ -182,30 +184,29 @@ class _ProfileCreationViewState extends ConsumerState<ProfileCreationView> {
                                     Theme.of(context).textTheme.titleMedium,
                               ),
                               const SizedBox(height: 12),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _SexOption(
-                                      label: l10n.male,
-                                      icon: CupertinoIcons.person,
-                                      isSelected:
-                                          vm.sex == BiologicalSex.male,
-                                      onTap: () =>
-                                          vm.setSex(BiologicalSex.male),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: _SexOption(
-                                      label: l10n.female,
-                                      icon: CupertinoIcons.person,
-                                      isSelected:
-                                          vm.sex == BiologicalSex.female,
-                                      onTap: () =>
-                                          vm.setSex(BiologicalSex.female),
-                                    ),
-                                  ),
-                                ],
+                              BiologicalSexSelector(
+                                selectedSex: vm.sex,
+                                onChanged: (val) => vm.setSex(val),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Araç Tipi
+                        GlassCard(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.vehicleTypeSectionLabel,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 12),
+                              VehiclePicker(
+                                selectedVehicle: vm.vehicleType,
+                                onChanged: (type) => vm.setVehicleType(type),
                               ),
                             ],
                           ),
@@ -283,54 +284,3 @@ class _ProfileCreationViewState extends ConsumerState<ProfileCreationView> {
 }
 
 /// Cinsiyet seçim butonu (Onboarding ile aynı tasarım)
-class _SexOption extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _SexOption({
-    required this.label,
-    required this.icon,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.accent.withAlpha(30)
-              : AppColors.glassSubtle,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColors.accent : AppColors.glassBorder,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? AppColors.accent : AppColors.textSecondary,
-              size: 28,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? AppColors.accent : AppColors.textSecondary,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

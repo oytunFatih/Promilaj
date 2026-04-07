@@ -1,83 +1,95 @@
 /// Ülkelere göre yasal kan alkol limitleri (‰ — promil).
 /// ISO 3166-1 alpha-2 ülke kodu → yasal BAC limiti.
 /// Harici API çağrısı YAPILMAZ — tüm veriler burada gömülüdür.
-const Map<String, double> legalBacLimits = {
+class CountryLegalLimits {
+  final double car;
+  final double motorcycle;
+  final double truckOrBus;
+
+  const CountryLegalLimits({
+    required this.car,
+    required this.motorcycle,
+    required this.truckOrBus,
+  });
+}
+
+const Map<String, CountryLegalLimits> legalBacLimits = {
   // Avrupa
-  'TR': 0.50, // Türkiye
-  'DE': 0.50, // Almanya
-  'GB': 0.80, // Birleşik Krallık
-  'FR': 0.50, // Fransa
-  'ES': 0.50, // İspanya
-  'IT': 0.50, // İtalya
-  'PT': 0.50, // Portekiz
-  'NL': 0.50, // Hollanda
-  'BE': 0.50, // Belçika
-  'AT': 0.50, // Avusturya
-  'CH': 0.50, // İsviçre
-  'SE': 0.20, // İsveç
-  'NO': 0.20, // Norveç
-  'DK': 0.50, // Danimarka
-  'FI': 0.50, // Finlandiya
-  'PL': 0.20, // Polonya
-  'CZ': 0.00, // Çek Cumhuriyeti
-  'SK': 0.00, // Slovakya
-  'HU': 0.00, // Macaristan
-  'RO': 0.00, // Romanya
-  'BG': 0.50, // Bulgaristan
-  'HR': 0.50, // Hırvatistan
-  'SI': 0.50, // Slovenya
-  'RS': 0.30, // Sırbistan
-  'GR': 0.50, // Yunanistan
-  'IE': 0.50, // İrlanda
-  'IS': 0.50, // İzlanda
-  'LU': 0.50, // Lüksemburg
-  'EE': 0.20, // Estonya
-  'LV': 0.50, // Letonya
-  'LT': 0.40, // Litvanya
-  'UA': 0.00, // Ukrayna
-  'BY': 0.00, // Belarus
-  'MD': 0.30, // Moldova
-  'AL': 0.10, // Arnavutluk
-  'MK': 0.50, // Kuzey Makedonya
-  'BA': 0.30, // Bosna Hersek
-  'ME': 0.30, // Karadağ
-  'RU': 0.00, // Rusya
+  'TR': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'DE': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'GB': CountryLegalLimits(car: 0.80, motorcycle: 0.80, truckOrBus: 0.80),
+  'FR': CountryLegalLimits(car: 0.50, motorcycle: 0.20, truckOrBus: 0.20),
+  'ES': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.30),
+  'IT': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'PT': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'NL': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'BE': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'AT': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'CH': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'SE': CountryLegalLimits(car: 0.20, motorcycle: 0.20, truckOrBus: 0.10),
+  'NO': CountryLegalLimits(car: 0.20, motorcycle: 0.20, truckOrBus: 0.0),
+  'DK': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'FI': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'PL': CountryLegalLimits(car: 0.20, motorcycle: 0.20, truckOrBus: 0.0),
+  'CZ': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.00),
+  'SK': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'HU': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'RO': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'BG': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'HR': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'SI': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'RS': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'GR': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'IE': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'IS': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'LU': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'EE': CountryLegalLimits(car: 0.20, motorcycle: 0.20, truckOrBus: 0.0),
+  'LV': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'LT': CountryLegalLimits(car: 0.40, motorcycle: 0.40, truckOrBus: 0.0),
+  'UA': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'BY': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'MD': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'AL': CountryLegalLimits(car: 0.10, motorcycle: 0.10, truckOrBus: 0.0),
+  'MK': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'BA': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'ME': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'RU': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.00),
 
   // Asya
-  'AZ': 0.00, // Azerbaycan
-  'GE': 0.00, // Gürcistan
-  'JP': 0.30, // Japonya
-  'KR': 0.30, // Güney Kore
-  'CN': 0.20, // Çin
-  'IN': 0.30, // Hindistan
-  'TH': 0.50, // Tayland
-  'VN': 0.00, // Vietnam
-  'PH': 0.50, // Filipinler
-  'MY': 0.80, // Malezya
-  'SG': 0.80, // Singapur
-  'ID': 0.00, // Endonezya
-  'IL': 0.50, // İsrail
-  'AE': 0.00, // BAE
-  'SA': 0.00, // Suudi Arabistan
-  'KZ': 0.30, // Kazakistan
+  'AZ': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.00),
+  'GE': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'JP': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'KR': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'CN': CountryLegalLimits(car: 0.20, motorcycle: 0.20, truckOrBus: 0.0),
+  'IN': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'TH': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'VN': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'PH': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'MY': CountryLegalLimits(car: 0.80, motorcycle: 0.80, truckOrBus: 0.0),
+  'SG': CountryLegalLimits(car: 0.80, motorcycle: 0.80, truckOrBus: 0.0),
+  'ID': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'IL': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'AE': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'SA': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'KZ': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
 
   // Amerika
-  'US': 0.80, // ABD
-  'CA': 0.80, // Kanada
-  'MX': 0.80, // Meksika
-  'BR': 0.00, // Brezilya
-  'AR': 0.50, // Arjantin
-  'CL': 0.30, // Şili
-  'CO': 0.40, // Kolombiya
-  'PE': 0.50, // Peru
+  'US': CountryLegalLimits(car: 0.80, motorcycle: 0.80, truckOrBus: 0.40),
+  'CA': CountryLegalLimits(car: 0.80, motorcycle: 0.80, truckOrBus: 0.0),
+  'MX': CountryLegalLimits(car: 0.80, motorcycle: 0.80, truckOrBus: 0.0),
+  'BR': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'AR': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'CL': CountryLegalLimits(car: 0.30, motorcycle: 0.30, truckOrBus: 0.0),
+  'CO': CountryLegalLimits(car: 0.40, motorcycle: 0.40, truckOrBus: 0.0),
+  'PE': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
 
   // Afrika & Okyanusya
-  'ZA': 0.50, // Güney Afrika
-  'AU': 0.50, // Avustralya
-  'NZ': 0.50, // Yeni Zelanda
-  'EG': 0.00, // Mısır
-  'NG': 0.50, // Nijerya
-  'KE': 0.80, // Kenya
-  'MA': 0.00, // Fas
-  'TN': 0.00, // Tunus
+  'ZA': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'AU': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'NZ': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'EG': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'NG': CountryLegalLimits(car: 0.50, motorcycle: 0.50, truckOrBus: 0.0),
+  'KE': CountryLegalLimits(car: 0.80, motorcycle: 0.80, truckOrBus: 0.0),
+  'MA': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
+  'TN': CountryLegalLimits(car: 0.00, motorcycle: 0.00, truckOrBus: 0.0),
 };

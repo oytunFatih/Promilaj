@@ -1,9 +1,16 @@
-import 'dart:ui' as ui;
+
+import 'package:flutter/material.dart';
 import 'package:promilaj/data/models/user_profile.dart';
 
 /// Çoklu profil desteği için oturum profili modeli.
 /// Mevcut UserProfile'ı genişletir — her profil kendi BAC takibine sahiptir.
 /// Mimari N profil desteği için hazırdır; şimdilik max 2 profil (A + B).
+enum VehicleType {
+  motorcycle, // Motorcycle / Motosiklet
+  car,        // Car / Otomobil
+  truckOrBus, // Truck or Bus / Kamyon veya Otobüs
+}
+
 class SessionProfile {
   /// Profil kimliği — 'A' (birincil) veya 'B' (misafir)
   final String id;
@@ -21,10 +28,13 @@ class SessionProfile {
   final int age;
 
   /// Seçilen dil ('tr', 'en' vb.)
-  final String selectedLanguage;
+  final Locale? selectedLocale;
 
   /// Seçilen ülke kodu (Manuel seçim. Otomatik için null)
   final String? selectedCountryCode;
+
+  /// Kullanıcının seçtiği araç tipi
+  final VehicleType vehicleType;
 
   const SessionProfile({
     required this.id,
@@ -32,8 +42,9 @@ class SessionProfile {
     required this.weightKg,
     required this.sex,
     required this.age,
-    required this.selectedLanguage,
+    this.selectedLocale,
     this.selectedCountryCode,
+    this.vehicleType = VehicleType.car,
   });
 
   /// Eski UserProfile'dan SessionProfile oluşturma (migrasyon için)
@@ -44,8 +55,9 @@ class SessionProfile {
       weightKg: legacy.weightKg,
       sex: legacy.sex,
       age: legacy.age,
-      selectedLanguage: 'en', // V1 legacy varsayılanı (v1.0.3 ile migration)
+      selectedLocale: null, // Cihaz dili varsayılan
       selectedCountryCode: null, // GPS otomatik
+      vehicleType: VehicleType.car, // Varsayılan araç tipi
     );
   }
 
@@ -66,8 +78,9 @@ class SessionProfile {
         'weightKg': weightKg,
         'sex': sex.name,
         'age': age,
-        'selectedLanguage': selectedLanguage,
+        'selectedLocale': selectedLocale?.languageCode,
         'selectedCountryCode': selectedCountryCode,
+        'vehicleType': vehicleType.name,
       };
 
   /// JSON'dan nesne oluşturma
@@ -77,18 +90,12 @@ class SessionProfile {
         weightKg: (json['weightKg'] as num).toDouble(),
         sex: BiologicalSex.values.byName(json['sex'] as String),
         age: json['age'] as int,
-        selectedLanguage: json['selectedLanguage'] as String? ?? _getDeviceLocale(),
+        selectedLocale: json['selectedLocale'] != null ? Locale(json['selectedLocale'] as String) : (json['selectedLanguage'] != null ? Locale(json['selectedLanguage'] as String) : null),
         selectedCountryCode: json['selectedCountryCode'] as String?,
+        vehicleType: json['vehicleType'] != null 
+            ? VehicleType.values.byName(json['vehicleType'] as String) 
+            : VehicleType.car,
       );
-
-  static String _getDeviceLocale() {
-    try {
-      final localeCode = ui.PlatformDispatcher.instance.locale.languageCode;
-      return ['tr', 'az', 'en', 'es', 'fr'].contains(localeCode) ? localeCode : 'en';
-    } catch (_) {
-      return 'en';
-    }
-  }
 
   /// Güncelleme kolaylığı için kopyalama metodu
   SessionProfile copyWith({
@@ -97,8 +104,9 @@ class SessionProfile {
     double? weightKg,
     BiologicalSex? sex,
     int? age,
-    String? selectedLanguage,
+    Locale? selectedLocale,
     String? selectedCountryCode,
+    VehicleType? vehicleType,
   }) {
     return SessionProfile(
       id: id ?? this.id,
@@ -106,8 +114,9 @@ class SessionProfile {
       weightKg: weightKg ?? this.weightKg,
       sex: sex ?? this.sex,
       age: age ?? this.age,
-      selectedLanguage: selectedLanguage ?? this.selectedLanguage,
+      selectedLocale: selectedLocale ?? this.selectedLocale,
       selectedCountryCode: selectedCountryCode ?? this.selectedCountryCode,
+      vehicleType: vehicleType ?? this.vehicleType,
     );
   }
 }

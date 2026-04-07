@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:promilaj/core/constants/constants.dart';
 import 'package:promilaj/core/utils/bac_calculator.dart';
 import 'package:promilaj/core/utils/location_service.dart';
-import 'package:promilaj/data/datasources/legal_limits_data.dart';
+
 import 'package:promilaj/core/services/country_resolver.dart';
 import 'package:promilaj/data/models/drink_entry.dart';
 import 'package:promilaj/data/models/session_profile.dart';
@@ -59,9 +59,8 @@ class HomeViewModel extends ChangeNotifier {
       : _countryResolver.resolveCountryCode(activeProfile!);
       
   double get legalLimit {
-    final code = countryCode;
-    if (code == null) return kDefaultLegalLimit;
-    return legalBacLimits[code] ?? kDefaultLegalLimit;
+    if (activeProfile == null) return kDefaultLegalLimit;
+    return _countryResolver.resolveLegalLimit(activeProfile!);
   }
   bool get isAboveLegalLimit => _currentBac > legalLimit;
   bool get isSober => _currentBac <= 0.0;

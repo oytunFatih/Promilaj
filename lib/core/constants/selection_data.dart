@@ -1,27 +1,8 @@
-/// Sabit dil listesi (Toplam 23: Tümü İngilizce ismine göre alfabetik dizilidir, ilk 3 istisna: TR, AZ, TM)
+/// Sabit dil listesi (Toplam 3: TR, AZ, EN)
 const List<Map<String, String>> supportedLanguages = [
   {'code': 'tr', 'name': 'Türkçe', 'flag': '🇹🇷'},
   {'code': 'az', 'name': 'Azərbaycanca', 'flag': '🇦🇿'},
-  {'code': 'tk', 'name': 'Türkmen dili', 'flag': '🇹🇲'},
-  {'code': 'ar', 'name': 'العربية (Arabic)', 'flag': '🇸🇦'},
-  {'code': 'bn', 'name': 'বাংলা (Bengali)', 'flag': '🇧🇩'},
-  {'code': 'zh', 'name': '中文 (Chinese)', 'flag': '🇨🇳'},
   {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
-  {'code': 'fr', 'name': 'Français (French)', 'flag': '🇫🇷'},
-  {'code': 'de', 'name': 'Deutsch (German)', 'flag': '🇩🇪'},
-  {'code': 'hi', 'name': 'हिन्दी (Hindi)', 'flag': '🇮🇳'},
-  {'code': 'id', 'name': 'Bahasa Indonesia', 'flag': '🇮🇩'},
-  {'code': 'it', 'name': 'Italiano (Italian)', 'flag': '🇮🇹'},
-  {'code': 'ja', 'name': '日本語 (Japanese)', 'flag': '🇯🇵'},
-  {'code': 'ko', 'name': '한국어 (Korean)', 'flag': '🇰🇷'},
-  {'code': 'mr', 'name': 'मराठी (Marathi)', 'flag': '🇮🇳'},
-  {'code': 'pt', 'name': 'Português (Portuguese)', 'flag': '🇵🇹'},
-  {'code': 'ru', 'name': 'Русский (Russian)', 'flag': '🇷🇺'},
-  {'code': 'es', 'name': 'Español (Spanish)', 'flag': '🇪🇸'},
-  {'code': 'ta', 'name': 'தமிழ் (Tamil)', 'flag': '🇮🇳'},
-  {'code': 'te', 'name': 'తెలుగు (Telugu)', 'flag': '🇮🇳'},
-  {'code': 'ur', 'name': 'اردو (Urdu)', 'flag': '🇵🇰'},
-  {'code': 'vi', 'name': 'Tiếng Việt (Vietnamese)', 'flag': '🇻🇳'},
 ];
 
 /// Sabit ülke listesi (Toplam 41: İlk 3 TR, AZ, TM. Gerisi alfabetik)

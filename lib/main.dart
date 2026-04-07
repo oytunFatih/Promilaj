@@ -21,9 +21,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-      ],
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
       child: const PromilajApp(),
     ),
   );
@@ -69,11 +67,9 @@ class _PromilajAppState extends ConsumerState<PromilajApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en'), Locale('tr'), Locale('az'), Locale('es'), Locale('fr'),
-        Locale('tk'), Locale('ar'), Locale('bn'), Locale('zh'), Locale('de'),
-        Locale('hi'), Locale('id'), Locale('it'), Locale('ja'), Locale('ko'),
-        Locale('mr'), Locale('pt'), Locale('ru'), Locale('ta'), Locale('te'),
-        Locale('ur'), Locale('vi'),
+        Locale('en'),
+        Locale('tr'),
+        Locale('az'),
       ],
       locale: settings.selectedLocale,
       home: FutureBuilder<void>(
@@ -98,7 +94,8 @@ class _PromilajAppState extends ConsumerState<PromilajApp> {
                 return const HomeView();
               } else {
                 final prefs = ref.read(sharedPreferencesProvider);
-                final bool infoScreenShown = prefs.getBool('info_screen_shown') ?? false;
+                final bool infoScreenShown =
+                    prefs.getBool('info_screen_shown') ?? false;
                 if (!infoScreenShown) {
                   return const FirstLaunchInfoView();
                 }

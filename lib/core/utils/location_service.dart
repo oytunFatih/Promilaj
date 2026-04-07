@@ -1,6 +1,4 @@
 import 'dart:ui' as ui;
-import 'package:promilaj/data/datasources/legal_limits_data.dart';
-import 'package:promilaj/core/constants/constants.dart';
 
 /// Konum servisi — GPS ile ülke tespiti yapar.
 /// Konum izni verilmezse varsayılan olarak en muhafazakar limit kullanılır.
@@ -14,11 +12,7 @@ class LocationService {
   /// Konum izni reddedildi mi?
   bool get isPermissionDenied => _permissionDenied;
 
-  /// Tespit edilen ülkenin yasal BAC limiti (‰)
-  double get legalLimit {
-    if (_countryCode == null) return kDefaultLegalLimit;
-    return legalBacLimits[_countryCode] ?? kDefaultLegalLimit;
-  }
+
 
   /// Konum izni iste ve ülkeyi tespit et.
   /// Başarılıysa true, izin reddedildiyse false döner.

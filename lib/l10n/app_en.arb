@@ -97,5 +97,9 @@
   "infoScreenNext": "Next",
   "infoButtonTitle": "Info",
   "infoPlaceholderText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  "infoCloseButton": "Close"
+  "infoCloseButton": "Close",
+  "vehicleTypeSectionLabel": "Vehicle Type",
+  "vehicleMotorcycle": "Motorcycle",
+  "vehicleCar": "Car",
+  "vehicleTruckOrBus": "Truck or Bus"
 }

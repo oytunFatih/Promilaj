@@ -15,6 +15,7 @@ class ProfileCreationViewModel extends ChangeNotifier {
   double _heightCm = 170.0;
   double _weightKg = 70.0;
   BiologicalSex _sex = BiologicalSex.male;
+  VehicleType _vehicleType = VehicleType.car;
   int _age = 25;
   bool _isSaving = false;
 
@@ -22,6 +23,7 @@ class ProfileCreationViewModel extends ChangeNotifier {
   double get heightCm => _heightCm;
   double get weightKg => _weightKg;
   BiologicalSex get sex => _sex;
+  VehicleType get vehicleType => _vehicleType;
   int get age => _age;
   bool get isSaving => _isSaving;
 
@@ -50,6 +52,11 @@ class ProfileCreationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setVehicleType(VehicleType value) {
+    _vehicleType = value;
+    notifyListeners();
+  }
+
   void setAge(int value) {
     _age = value;
     notifyListeners();
@@ -71,8 +78,9 @@ class ProfileCreationViewModel extends ChangeNotifier {
         weightKg: _weightKg,
         sex: _sex,
         age: _age,
-        selectedLanguage: profileA?.selectedLanguage ?? 'en',
+        selectedLocale: profileA?.selectedLocale ?? const Locale('en'),
         selectedCountryCode: profileA?.selectedCountryCode,
+        vehicleType: _vehicleType,
       );
       await _userRepo.saveSessionProfile(profile);
       return profile;
@@ -89,6 +97,7 @@ class ProfileCreationViewModel extends ChangeNotifier {
     _heightCm = 170.0;
     _weightKg = 70.0;
     _sex = BiologicalSex.male;
+    _vehicleType = VehicleType.car;
     _age = 25;
     _isSaving = false;
     notifyListeners();

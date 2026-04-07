@@ -7,7 +7,7 @@ import 'package:promilaj/data/models/user_profile.dart';
 /// Mevcut tek profil verisini çoklu profil formatına dönüştürür.
 /// Bir seferlik çalışır, idempotent'tir, veri kaybı olmaz.
 class MigrationService {
-  static const String _migrationFlag = 'migration_v1_0_2_done';
+  static const String _migrationFlag = 'migration_v1_0_3_done';
   static const String _legacyProfileKey = 'user_profile';
   static const String _legacyEntriesKey = 'drink_entries';
   static const String _sessionProfilePrefix = 'session_profile_';
@@ -29,7 +29,10 @@ class MigrationService {
         // 1. Eski profili oku ve SessionProfile'a dönüştür
         final legacyMap = json.decode(legacyProfileJson) as Map<String, dynamic>;
         final legacyProfile = UserProfile.fromJson(legacyMap);
-        final sessionProfile = SessionProfile.fromLegacyUserProfile(legacyProfile);
+        final sessionProfile = SessionProfile.fromLegacyUserProfile(legacyProfile).copyWith(
+          selectedCountryCode: null,
+          selectedLocale: null,
+        );
 
         // 2. Yeni formatta kaydet
         final sessionJson = json.encode(sessionProfile.toJson());

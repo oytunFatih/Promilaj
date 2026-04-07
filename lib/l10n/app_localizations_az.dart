@@ -273,4 +273,16 @@ class AppLocalizationsAz extends AppLocalizations {
 
   @override
   String get infoCloseButton => 'Close';
+
+  @override
+  String get vehicleTypeSectionLabel => 'Nəqliyyat Növü';
+
+  @override
+  String get vehicleMotorcycle => 'Motosiklet';
+
+  @override
+  String get vehicleCar => 'Avtomobil';
+
+  @override
+  String get vehicleTruckOrBus => 'Yük maşını və ya Avtobus';
 }

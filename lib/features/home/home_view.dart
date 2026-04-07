@@ -10,6 +10,7 @@ import 'package:promilaj/data/datasources/legal_info_urls_data.dart';
 import 'package:promilaj/features/home/widgets/bac_indicator_widget.dart';
 import 'package:promilaj/features/home/widgets/countdown_widget.dart';
 import 'package:promilaj/features/home/widgets/profile_switcher_widget.dart';
+import 'package:promilaj/data/models/session_profile.dart'; // For VehicleType
 import 'package:promilaj/features/add_drink/add_drink_view.dart';
 import 'package:promilaj/features/profile/profile_creation_view.dart';
 import 'package:promilaj/features/settings/settings_view.dart';
@@ -207,9 +208,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         if (vm.countryCode != null)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12),
-                            child: Text(
-                              '${l10n.legalLimitLabel}: ${vm.legalLimit.toStringAsFixed(2)} ‰ (${vm.countryCode})',
-                              style: Theme.of(context).textTheme.bodyMedium,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _getVehicleEmoji(vm.activeProfile?.vehicleType),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${l10n.legalLimitLabel}: ${vm.legalLimit.toStringAsFixed(2)} ‰ (${vm.countryCode})',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ],
                             ),
                           ),
 
@@ -300,6 +311,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ),
       ),
     );
+  }
+
+  String _getVehicleEmoji(VehicleType? type) {
+    if (type == null) return '🚗';
+    switch (type) {
+      case VehicleType.car: return '🚗';
+      case VehicleType.motorcycle: return '🏍';
+      case VehicleType.truckOrBus: return '🚛';
+    }
   }
 
   Widget _buildStatusMessage(dynamic vm, AppLocalizations l10n) {

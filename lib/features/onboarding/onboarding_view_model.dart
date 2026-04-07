@@ -23,6 +23,7 @@ class OnboardingViewModel extends ChangeNotifier {
   double _heightCm = 170.0;
   double _weightKg = 70.0;
   BiologicalSex _sex = BiologicalSex.male;
+  VehicleType _vehicleType = VehicleType.car;
   int _age = 25;
   String _selectedLanguage = 'en';
   String? _selectedCountryCode;
@@ -32,6 +33,7 @@ class OnboardingViewModel extends ChangeNotifier {
   double get heightCm => _heightCm;
   double get weightKg => _weightKg;
   BiologicalSex get sex => _sex;
+  VehicleType get vehicleType => _vehicleType;
   int get age => _age;
   String get selectedLanguage => _selectedLanguage;
   String? get selectedCountryCode => _selectedCountryCode;
@@ -59,6 +61,11 @@ class OnboardingViewModel extends ChangeNotifier {
 
   void setSex(BiologicalSex value) {
     _sex = value;
+    notifyListeners();
+  }
+
+  void setVehicleType(VehicleType value) {
+    _vehicleType = value;
     notifyListeners();
   }
 
@@ -92,8 +99,9 @@ class OnboardingViewModel extends ChangeNotifier {
         weightKg: _weightKg,
         sex: _sex,
         age: _age,
-        selectedLanguage: _selectedLanguage,
+        selectedLocale: Locale(_selectedLanguage),
         selectedCountryCode: _selectedCountryCode,
+        vehicleType: _vehicleType,
       );
       await _userRepo.saveSessionProfile(profile);
       return true;

@@ -7,8 +7,6 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_az.dart';
 import 'app_localizations_en.dart';
-import 'app_localizations_es.dart';
-import 'app_localizations_fr.dart';
 import 'app_localizations_tr.dart';
 
 // ignore_for_file: type=lint
@@ -99,8 +97,6 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('az'),
     Locale('en'),
-    Locale('es'),
-    Locale('fr'),
     Locale('tr'),
   ];
 
@@ -613,6 +609,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get infoCloseButton;
+
+  /// No description provided for @vehicleTypeSectionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get vehicleTypeSectionLabel;
+
+  /// No description provided for @vehicleMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle'**
+  String get vehicleMotorcycle;
+
+  /// No description provided for @vehicleCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get vehicleCar;
+
+  /// No description provided for @vehicleTruckOrBus.
+  ///
+  /// In en, this message translates to:
+  /// **'Truck or Bus'**
+  String get vehicleTruckOrBus;
 }
 
 class _AppLocalizationsDelegate
@@ -626,7 +646,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['az', 'en', 'es', 'fr', 'tr'].contains(locale.languageCode);
+      <String>['az', 'en', 'tr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -639,10 +659,6 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsAz();
     case 'en':
       return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
-    case 'fr':
-      return AppLocalizationsFr();
     case 'tr':
       return AppLocalizationsTr();
   }

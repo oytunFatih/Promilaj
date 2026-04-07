@@ -159,7 +159,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get categoryCocktails => 'KOKTEYLLER';
 
   @override
-  String get typeLager => 'Lager';
+  String get typeLager => 'Açık Bira';
 
   @override
   String get typePilsner => 'Pilsner';
@@ -168,7 +168,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get typeAle => 'Ale';
 
   @override
-  String get typeStout => 'Stout';
+  String get typeStout => 'Siyah Bira';
 
   @override
   String get typeWheatBeer => 'Buğday Birası';
@@ -252,7 +252,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get autoDetect => '🌍 Auto-detect (GPS)';
 
   @override
-  String get otherBrand => 'Diğer';
+  String get otherBrand => 'Diğer / Bilmiyorum';
 
   @override
   String get manualAbvLabel => 'ABV Girin (%)';

@@ -168,7 +168,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get typeAle => 'Ale';
 
   @override
-  String get typeStout => 'Stout';
+  String get typeStout => 'Dark Beer';
 
   @override
   String get typeWheatBeer => 'Wheat Beer';
@@ -252,7 +252,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoDetect => '🌍 Auto-detect (GPS)';
 
   @override
-  String get otherBrand => 'Other';
+  String get otherBrand => 'Other / Unknown';
 
   @override
   String get manualAbvLabel => 'Enter ABV (%)';

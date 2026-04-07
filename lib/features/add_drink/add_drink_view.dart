@@ -213,7 +213,22 @@ class _AddDrinkViewState extends ConsumerState<AddDrinkView> {
                   backgroundColor: AppColors.glassWhite,
                   side: const BorderSide(color: AppColors.glassBorder),
                   labelStyle: const TextStyle(color: AppColors.textPrimary),
-                  onPressed: () => vm.selectType(type),
+                  onPressed: () {
+                    final isOther = _typeName(type, l10n) == l10n.otherBrand;
+                    if (isOther) {
+                      vm.selectType(type);
+                      setState(() => _isManualAbvMode = true);
+                    } else if (entry.key == DrinkCategory.cocktails) {
+                      vm.selectType(type);
+                      Future.microtask(() {
+                        if (vm.filteredBrands.isNotEmpty) {
+                          vm.selectBrand(vm.filteredBrands.first);
+                        }
+                      });
+                    } else {
+                      vm.selectType(type);
+                    }
+                  },
                 );
               }).toList(),
             ),
@@ -551,7 +566,7 @@ class _AddDrinkViewState extends ConsumerState<AddDrinkView> {
       case DrinkType.wheatBeer:
         return l10n.typeWheatBeer;
       case DrinkType.ipa:
-        return l10n.typeIpa;
+        return l10n.otherBrand;
       case DrinkType.redWine:
         return l10n.typeRedWine;
       case DrinkType.whiteWine:
@@ -563,7 +578,7 @@ class _AddDrinkViewState extends ConsumerState<AddDrinkView> {
       case DrinkType.champagne:
         return l10n.typeChampagne;
       case DrinkType.prosecco:
-        return l10n.typeProsecco;
+        return l10n.otherBrand;
       case DrinkType.vodka:
         return l10n.typeVodka;
       case DrinkType.whisky:
@@ -579,7 +594,7 @@ class _AddDrinkViewState extends ConsumerState<AddDrinkView> {
       case DrinkType.raki:
         return l10n.typeRaki;
       case DrinkType.ouzo:
-        return l10n.typeOuzo;
+        return l10n.otherBrand;
       case DrinkType.mojito:
         return 'Mojito';
       case DrinkType.margarita:
@@ -605,7 +620,7 @@ class _AddDrinkViewState extends ConsumerState<AddDrinkView> {
       case DrinkType.sexOnTheBeach:
         return 'Sex on the Beach';
       case DrinkType.moscowMule:
-        return 'Moscow Mule';
+        return l10n.otherBrand;
     }
   }
 

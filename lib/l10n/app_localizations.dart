@@ -415,7 +415,7 @@ abstract class AppLocalizations {
   /// No description provided for @typeStout.
   ///
   /// In en, this message translates to:
-  /// **'Stout'**
+  /// **'Dark Beer'**
   String get typeStout;
 
   /// No description provided for @typeWheatBeer.
@@ -571,7 +571,7 @@ abstract class AppLocalizations {
   /// No description provided for @otherBrand.
   ///
   /// In en, this message translates to:
-  /// **'Other'**
+  /// **'Other / Unknown'**
   String get otherBrand;
 
   /// No description provided for @manualAbvLabel.

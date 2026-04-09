@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,18 +102,153 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               color: AppColors.textSecondary),
                           tooltip: l10n.infoButtonTitle,
                           onPressed: () {
-                            showDialog(
+                            final lang = ref.read(settingsViewModelProvider).selectedLanguage;
+
+                            const sections = {
+                              'tr': [
+                                ('Promilaj Nedir?',
+                                    'Promilaj, kan alkol seviyenizi (BAC) Widmark formülüyle hesaplayan bir araçtır. '
+                                    'Bulunduğunuz ülkenin yasal limitlerini gösterir ve ne zaman araç kullanabileceğinizi tahmin eder.'),
+                                ('Lütfen Dikkat',
+                                    'Alkollüyken araç kullanmayın. Bu uygulama bir alkol ölçer cihazının yerini tutmaz; '
+                                    'yalnızca tahmini bir hesaplama sunar. Emin olmak için her zaman bekleyin.'),
+                                ('Konum İzni',
+                                    'Bulunduğunuz ülkeye göre yasal alkol limitini otomatik gösterebilmek için konumunuza '
+                                    'ihtiyaç duyuyoruz. Konum bilginiz cihazınızda kalır, hiçbir sunucuya gönderilmez.'),
+                                ('Neden Bu Bilgileri İstiyoruz?',
+                                    'Ağırlık, boy ve içtiğiniz içeceğin türü kan alkol seviyenizi doğrudan etkiler. '
+                                    'Girdiğiniz bilgiler yalnızca hesaplama amacıyla kullanılır, saklanmaz veya paylaşılmaz.'),
+                                ('Biyolojik Cinsiyet mi, Cinsiyet mi?',
+                                    'Widmark formülü vücuttaki su ve yağ oranına dayandığından biyolojik cinsiyet (erkek/kadın) sorar. '
+                                    'Bu soru cinsiyet kimliğinizle ilgili değildir; yalnızca metabolizma hesabı içindir.'),
+                                ('Promil (‰) Nedir?',
+                                    'Promil, binde bir anlamına gelir. Kanda 1‰ alkol, her 1.000 gram kanda 1 gram alkol demektir. '
+                                    'Yüzde yerine binde kullanılır çünkü kan alkol seviyeleri çok küçük miktarlarla ifade edilir.'),
+                                ('Yasal Uyarı',
+                                    'Bu uygulama yalnızca bilgilendirme amaçlıdır. Sunulan değerler tahminidir; gerçek kan alkol '
+                                    'seviyeniz farklılık gösterebilir. Yaş, ilaç kullanımı, tokluk durumu ve genetik faktörler her '
+                                    'bireyin metabolizmasını etkiler. Yasal bir karar öncesinde onaylı bir alkol ölçer kullanınız. '
+                                    'Geliştirici ve uygulama, bu bilgiler doğrultusunda alınan kararlardan sorumlu tutulamaz.'),
+                              ],
+                              'az': [
+                                ('Promilaj Nədir?',
+                                    'Promilaj, Widmark düsturu ilə qan spirt səviyyənizi (BAC) hesablayan bir vasitədir. '
+                                    'Ölkənizdəki qanuni limitləri göstərir və avtomobil sürə biləcəyiniz vaxtı təxmin edir.'),
+                                ('Diqqət Edin',
+                                    'Spirt içkisi içdikdən sonra avtomobil sürmə. Bu tətbiq alkomat cihazının əvəzini tutmur; '
+                                    'yalnız təxmini hesablama təqdim edir. Əmin olmaq üçün həmişə gözləyin.'),
+                                ('Məkan İcazəsi',
+                                    'Ölkənizə görə qanuni spirt limitini avtomatik göstərmək üçün məkanınıza ehtiyacımız var. '
+                                    'Məkan məlumatlarınız cihazınızda qalır, heç bir serverə göndərilmir.'),
+                                ('Niyə Bu Məlumatları İstəyirik?',
+                                    'Çəki, boy və içdiyiniz içkinin növü qan spirt səviyyənizə birbaşa təsir edir. '
+                                    'Daxil etdiyiniz məlumatlar yalnız hesablama məqsədilə istifadə olunur, saxlanmır və paylaşılmır.'),
+                                ('Bioloji Cins mi, Gender mi?',
+                                    'Widmark düsturu bədəndəki su və yağ nisbətinə əsaslandığından bioloji cinsi (kişi/qadın) soruşur. '
+                                    'Bu sual cinsiyet kimliyinizlə əlaqəli deyil; yalnız metabolizm hesabı üçündür.'),
+                                ('Promil (‰) Nədir?',
+                                    'Promil mində bir deməkdir. Qanda 1‰ spirt hər 1.000 qram qanda 1 qram spirt deməkdir. '
+                                    'Faiz əvəzinə mində istifadə olunur, çünki qan spirt səviyyələri çox kiçik miqdarlarla ifadə edilir.'),
+                                ('Hüquqi Xəbərdarlıq',
+                                    'Bu tətbiq yalnız məlumat məqsədilə nəzərdə tutulmuşdur. Təqdim olunan dəyərlər təxminidir; '
+                                    'real qan spirt səviyyəniz fərqli ola bilər. Yaş, dərman istifadəsi, toxluq vəziyyəti və genetik '
+                                    'amillər hər fərdin metabolizminə təsir edir. Hər hansı hüquqi qərar əvvəl sertifikatlı alkomat '
+                                    'istifadə edin. Proqramçı və tətbiq bu məlumatlar əsasında qəbul edilən qərarlardan məsul tutula bilməz.'),
+                              ],
+                              'en': [
+                                ('What Is Promilaj?',
+                                    'Promilaj is a tool that estimates your blood alcohol concentration (BAC) using the Widmark formula. '
+                                    'It shows the legal limits for your country and estimates when you can safely drive again.'),
+                                ('Please Note',
+                                    'Never drive under the influence of alcohol. This app is not a substitute for a breathalyzer; '
+                                    'it provides estimates only. When in doubt, always wait.'),
+                                ('Location Permission',
+                                    'We use your location to automatically display the legal alcohol limit for your country. '
+                                    'Your location stays on your device and is never sent to any server.'),
+                                ('Why Do We Ask for This Information?',
+                                    'Your weight, height, and the type of drink you consumed directly affect your blood alcohol level. '
+                                    'The information you enter is used solely for calculation and is never stored or shared.'),
+                                ('Biological Sex vs. Gender',
+                                    'The Widmark formula is based on body water and fat ratios, so it asks for your biological sex '
+                                    '(male/female). This question is not about your gender identity; it is used only for metabolic calculation.'),
+                                ('What Is Promille (‰)?',
+                                    'Promille means per thousand. A BAC of 1‰ means 1 gram of alcohol per 1,000 grams of blood. '
+                                    'Promille is used instead of percent because blood alcohol levels are expressed in very small amounts.'),
+                                ('Legal Disclaimer',
+                                    'This app is for informational purposes only. The values provided are estimates; your actual blood '
+                                    'alcohol level may differ. Age, medication, food intake, and genetic factors affect each individual\'s '
+                                    'metabolism differently. Use a certified breathalyzer before making any legal decision. The developer '
+                                    'and this application cannot be held responsible for any decisions made based on this information.'),
+                              ],
+                            };
+
+                            final items = sections[lang]!;
+
+                            showModalBottomSheet(
                               context: context,
-                              builder: (ctx) => AlertDialog(
-                                backgroundColor: AppColors.surface,
-                                title: Text(l10n.infoButtonTitle),
-                                content: Text(l10n.infoPlaceholderText),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(ctx),
-                                    child: Text(l10n.infoCloseButton),
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (ctx) => DraggableScrollableSheet(
+                                initialChildSize: 0.85,
+                                minChildSize: 0.5,
+                                maxChildSize: 0.95,
+                                expand: false,
+                                builder: (_, scrollController) => Container(
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.surface,
+                                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                                   ),
-                                ],
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 12),
+                                      Container(
+                                        width: 40,
+                                        height: 4,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.textSecondary.withOpacity(0.4),
+                                          borderRadius: BorderRadius.circular(2),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Expanded(
+                                        child: ListView.separated(
+                                          controller: scrollController,
+                                          padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
+                                          itemCount: items.length,
+                                          separatorBuilder: (_, __) => const SizedBox(height: 20),
+                                          itemBuilder: (_, i) => Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                items[i].$1,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium
+                                                    ?.copyWith(
+                                                      color: AppColors.textPrimary,
+                                                      fontWeight: FontWeight.bold,
+                                                      letterSpacing: 0.3,
+                                                    ),
+                                              ),
+                                              const SizedBox(height: 6),
+                                              Text(
+                                                items[i].$2,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                      color: AppColors.textPrimary
+                                                          .withOpacity(0.75),
+                                                      height: 1.6,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             );
                           },
@@ -371,20 +508,272 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   void _showContactBuildersPopup(BuildContext context) {
-    showDialog(
+    final lang = ref.read(settingsViewModelProvider).selectedLanguage;
+
+    // Localized labels
+    final labels = {
+      'tr': (
+        title: 'Geliştiricilerle İletişim',
+        namePlaceholder: 'Ad Soyad',
+        emailPlaceholder: 'E-posta',
+        messagePlaceholder: 'Öneri veya şikayetiniz...',
+        sendButton: 'Gönder',
+        successMessage: 'Mesajınız iletildi, teşekkürler!',
+        errorMessage: 'Gönderilemedi. Lütfen tekrar deneyin.',
+        validationName: 'Ad soyad gerekli.',
+        validationEmail: 'Geçerli bir e-posta girin.',
+        validationMessage: 'Mesaj en az 15 karakter olmalı.',
+      ),
+      'az': (
+        title: 'Tərtibatçılarla Əlaqə',
+        namePlaceholder: 'Ad Soyad',
+        emailPlaceholder: 'E-poçt',
+        messagePlaceholder: 'Təklif və ya şikayətiniz...',
+        sendButton: 'Göndər',
+        successMessage: 'Mesajınız çatdırıldı, təşəkkürlər!',
+        errorMessage: 'Göndərilmədi. Zəhmət olmasa yenidən cəhd edin.',
+        validationName: 'Ad soyad tələb olunur.',
+        validationEmail: 'Düzgün e-poçt daxil edin.',
+        validationMessage: 'Mesaj ən az 15 simvol olmalıdır.',
+      ),
+      'en': (
+        title: 'Contact the Builders',
+        namePlaceholder: 'Full Name',
+        emailPlaceholder: 'Email Address',
+        messagePlaceholder: 'Your suggestion or complaint...',
+        sendButton: 'Send',
+        successMessage: 'Your message has been sent, thank you!',
+        errorMessage: 'Failed to send. Please try again.',
+        validationName: 'Full name is required.',
+        validationEmail: 'Enter a valid email address.',
+        validationMessage: 'Message must be at least 15 characters.',
+      ),
+    };
+
+    final l = labels[lang] ?? labels['en']!;
+
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final messageController = TextEditingController();
+    String? errorText;
+    bool isSending = false;
+    bool sent = false;
+
+    showModalBottomSheet(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.surface,
-        title: const Text('Contact the Builders'),
-        content: const Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Close'),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setState) => Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ctx).viewInsets.bottom,
           ),
-        ],
+          child: DraggableScrollableSheet(
+            initialChildSize: 0.75,
+            minChildSize: 0.5,
+            maxChildSize: 0.95,
+            expand: false,
+            builder: (_, scrollController) => Container(
+              decoration: const BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              child: ListView(
+                controller: scrollController,
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.textSecondary.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    l.title,
+                    style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Full Name
+                  TextField(
+                    controller: nameController,
+                    maxLength: 30,
+                    maxLines: 1,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    decoration: InputDecoration(
+                      hintText: l.namePlaceholder,
+                      hintStyle: TextStyle(
+                        color: AppColors.textSecondary.withOpacity(0.6),
+                      ),
+                      counterStyle: const TextStyle(color: AppColors.textSecondary),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: AppColors.textSecondary.withOpacity(0.3),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: AppColors.accent),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  // Email
+                  TextField(
+                    controller: emailController,
+                    maxLength: 30,
+                    maxLines: 1,
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    decoration: InputDecoration(
+                      hintText: l.emailPlaceholder,
+                      hintStyle: TextStyle(
+                        color: AppColors.textSecondary.withOpacity(0.6),
+                      ),
+                      counterStyle: const TextStyle(color: AppColors.textSecondary),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: AppColors.textSecondary.withOpacity(0.3),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: AppColors.accent),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  // Message
+                  TextField(
+                    controller: messageController,
+                    maxLength: 200,
+                    maxLines: 6,
+                    minLines: 6,
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    decoration: InputDecoration(
+                      hintText: l.messagePlaceholder,
+                      hintStyle: TextStyle(
+                        color: AppColors.textSecondary.withOpacity(0.6),
+                      ),
+                      counterStyle: const TextStyle(color: AppColors.textSecondary),
+                      alignLabelWithHint: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: AppColors.textSecondary.withOpacity(0.3),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: AppColors.accent),
+                      ),
+                    ),
+                  ),
+                  if (errorText != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      errorText!,
+                      style: const TextStyle(color: Colors.redAccent),
+                    ),
+                  ],
+                  if (sent) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      l.successMessage,
+                      style: const TextStyle(color: Colors.greenAccent),
+                    ),
+                  ],
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: isSending || sent
+                          ? null
+                          : () async {
+                              final name = nameController.text.trim();
+                              final email = emailController.text.trim();
+                              final message = messageController.text.trim();
+
+                              if (name.isEmpty) {
+                                setState(() => errorText = l.validationName);
+                                return;
+                              }
+                              if (!email.contains('@') || !email.contains('.')) {
+                                setState(() => errorText = l.validationEmail);
+                                return;
+                              }
+                              if (message.length < 15) {
+                                setState(() => errorText = l.validationMessage);
+                                return;
+                              }
+
+                              setState(() {
+                                errorText = null;
+                                isSending = true;
+                              });
+
+                              try {
+                                final response = await http.post(
+                                  Uri.parse(
+                                    'https://api.emailjs.com/api/v1.0/email/send',
+                                  ),
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: jsonEncode({
+                                    'service_id': 'service_hms2up2',
+                                    'template_id': 'template_vyl17rf',
+                                    'user_id': 'MWWvejw1vHdMBh5Tf',
+                                    'template_params': {
+                                      'from_name': name,
+                                      'from_email': email,
+                                      'message': message,
+                                    },
+                                  }),
+                                );
+
+                                if (response.statusCode == 200) {
+                                  setState(() {
+                                    sent = true;
+                                    isSending = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    errorText = l.errorMessage;
+                                    isSending = false;
+                                  });
+                                }
+                              } catch (_) {
+                                setState(() {
+                                  errorText = l.errorMessage;
+                                  isSending = false;
+                                });
+                              }
+                            },
+                      child: isSending
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text(l.sendButton),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

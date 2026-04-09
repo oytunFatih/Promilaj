@@ -87,6 +87,10 @@ class _AddDrinkViewState extends ConsumerState<AddDrinkView> {
                           onPressed: () {
                             if (_isManualAbvMode && vm.currentStep == 1) {
                               setState(() => _isManualAbvMode = false);
+                              vm.goBack();
+                              if (vm.currentStep == 0) {
+                                _searchController.clear();
+                              }
                             } else {
                               vm.goBack();
                               if (vm.currentStep == 0) {
@@ -219,12 +223,7 @@ class _AddDrinkViewState extends ConsumerState<AddDrinkView> {
                       vm.selectType(type);
                       setState(() => _isManualAbvMode = true);
                     } else if (entry.key == DrinkCategory.cocktails) {
-                      vm.selectType(type);
-                      Future.microtask(() {
-                        if (vm.filteredBrands.isNotEmpty) {
-                          vm.selectBrand(vm.filteredBrands.first);
-                        }
-                      });
+                      vm.selectTypeForCocktail(type);
                     } else {
                       vm.selectType(type);
                     }

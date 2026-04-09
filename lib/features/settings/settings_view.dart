@@ -230,11 +230,12 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
   }
 
 
-  void _saveProfile() {
+  Future<void> _saveProfile() async {
     final vm = ref.read(settingsViewModelProvider);
     final h = double.tryParse(_heightController.text);
     final w = double.tryParse(_weightController.text);
     final a = int.tryParse(_ageController.text);
-    vm.updateProfile(heightCm: h, weightKg: w, age: a);
+    await vm.updateProfile(heightCm: h, weightKg: w, age: a);
+    if (mounted) Navigator.pop(context);
   }
 }

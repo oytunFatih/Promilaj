@@ -55,6 +55,15 @@ class AddDrinkViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void selectTypeForCocktail(DrinkType type) {
+    _selectedType = type;
+    _searchQuery = '';
+    final brands = filteredBrands;
+    _selectedBrand = brands.isNotEmpty ? brands.first : null;
+    _currentStep = 2;
+    notifyListeners();
+  }
+
   void selectBrand(DrinkBrand brand) {
     _selectedBrand = brand;
     _currentStep = 2;
@@ -78,6 +87,14 @@ class AddDrinkViewModel extends ChangeNotifier {
 
   void goBack() {
     if (_currentStep > 0) {
+      if (_currentStep == 2 && _selectedType != null) {
+        final isCocktail = _drinkRepo.getTypesByCategory(DrinkCategory.cocktails).contains(_selectedType);
+        if (isCocktail) {
+          _currentStep = 0;
+          notifyListeners();
+          return;
+        }
+      }
       _currentStep--;
       notifyListeners();
     }

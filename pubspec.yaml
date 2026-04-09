@@ -24,6 +24,7 @@ dependencies:
 
   # Harici bağlantılar
   url_launcher: ^6.3.1
+  http: ^1.2.0
 
   # Çoklu dil desteği
   intl: any

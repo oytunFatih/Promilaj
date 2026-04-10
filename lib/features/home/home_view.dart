@@ -17,6 +17,7 @@ import 'package:promilaj/features/add_drink/add_drink_view.dart';
 import 'package:promilaj/features/profile/profile_creation_view.dart';
 import 'package:promilaj/features/settings/settings_view.dart';
 import 'package:promilaj/l10n/app_localizations.dart';
+import 'package:promilaj/features/home/home_view_model.dart';
 
 /// Ana ekran — BAC göstergesi, geri sayımlar, profil değiştirme ve eylem butonları.
 class HomeView extends ConsumerStatefulWidget {
@@ -27,7 +28,6 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-
   @override
   void initState() {
     super.initState();
@@ -85,7 +85,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
             children: [
               // Üst bar — ayarlar ikonu + misafir profil ekleme
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -98,87 +101,133 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       children: [
                         // Persistent info button
                         IconButton(
-                          icon: const Icon(CupertinoIcons.info,
-                              color: AppColors.textSecondary),
+                          icon: const Icon(
+                            CupertinoIcons.info,
+                            color: AppColors.textSecondary,
+                          ),
                           tooltip: l10n.infoButtonTitle,
                           onPressed: () {
-                            final lang = ref.read(settingsViewModelProvider).selectedLanguage;
+                            final lang = ref
+                                .read(settingsViewModelProvider)
+                                .selectedLanguage;
 
                             const sections = {
                               'tr': [
-                                ('Promilaj Nedir?',
-                                    'Promilaj, kan alkol seviyenizi (BAC) Widmark formülüyle hesaplayan bir araçtır. '
-                                    'Bulunduğunuz ülkenin yasal limitlerini gösterir ve ne zaman araç kullanabileceğinizi tahmin eder.'),
-                                ('Lütfen Dikkat',
-                                    'Alkollüyken araç kullanmayın. Bu uygulama bir alkol ölçer cihazının yerini tutmaz; '
-                                    'yalnızca tahmini bir hesaplama sunar. Emin olmak için her zaman bekleyin.'),
-                                ('Konum İzni',
-                                    'Bulunduğunuz ülkeye göre yasal alkol limitini otomatik gösterebilmek için konumunuza '
-                                    'ihtiyaç duyuyoruz. Konum bilginiz cihazınızda kalır, hiçbir sunucuya gönderilmez.'),
-                                ('Neden Bu Bilgileri İstiyoruz?',
-                                    'Ağırlık, boy ve içtiğiniz içeceğin türü kan alkol seviyenizi doğrudan etkiler. '
-                                    'Girdiğiniz bilgiler yalnızca hesaplama amacıyla kullanılır, saklanmaz veya paylaşılmaz.'),
-                                ('Biyolojik Cinsiyet mi, Cinsiyet mi?',
-                                    'Widmark formülü vücuttaki su ve yağ oranına dayandığından biyolojik cinsiyet (erkek/kadın) sorar. '
-                                    'Bu soru cinsiyet kimliğinizle ilgili değildir; yalnızca metabolizma hesabı içindir.'),
-                                ('Promil (‰) Nedir?',
-                                    'Promil, binde bir anlamına gelir. Kanda 1‰ alkol, her 1.000 gram kanda 1 gram alkol demektir. '
-                                    'Yüzde yerine binde kullanılır çünkü kan alkol seviyeleri çok küçük miktarlarla ifade edilir.'),
-                                ('Yasal Uyarı',
-                                    'Bu uygulama yalnızca bilgilendirme amaçlıdır. Sunulan değerler tahminidir; gerçek kan alkol '
-                                    'seviyeniz farklılık gösterebilir. Yaş, ilaç kullanımı, tokluk durumu ve genetik faktörler her '
-                                    'bireyin metabolizmasını etkiler. Yasal bir karar öncesinde onaylı bir alkol ölçer kullanınız. '
-                                    'Geliştirici ve uygulama, bu bilgiler doğrultusunda alınan kararlardan sorumlu tutulamaz.'),
+                                (
+                                  'Promilaj Nedir?',
+                                  'Promilaj, kan alkol seviyenizi (BAC) Widmark formülüyle hesaplayan bir araçtır. '
+                                      'Bulunduğunuz ülkenin yasal limitlerini gösterir ve ne zaman araç kullanabileceğinizi tahmin eder.',
+                                ),
+                                (
+                                  'Lütfen Dikkat',
+                                  'Alkollüyken araç kullanmayın. Bu uygulama bir alkol ölçer cihazının yerini tutmaz; '
+                                      'yalnızca tahmini bir hesaplama sunar. Emin olmak için her zaman bekleyin.',
+                                ),
+                                (
+                                  'Konum İzni',
+                                  'Bulunduğunuz ülkeye göre yasal alkol limitini otomatik gösterebilmek için konumunuza '
+                                      'ihtiyaç duyuyoruz. Konum bilginiz cihazınızda kalır, hiçbir sunucuya gönderilmez.',
+                                ),
+                                (
+                                  'Neden Bu Bilgileri İstiyoruz?',
+                                  'Ağırlık, boy ve içtiğiniz içeceğin türü kan alkol seviyenizi doğrudan etkiler. '
+                                      'Girdiğiniz bilgiler yalnızca hesaplama amacıyla kullanılır, saklanmaz veya paylaşılmaz.',
+                                ),
+                                (
+                                  'Biyolojik Cinsiyet mi, Cinsiyet mi?',
+                                  'Widmark formülü vücuttaki su ve yağ oranına dayandığından biyolojik cinsiyet (erkek/kadın) sorar. '
+                                      'Bu soru cinsiyet kimliğinizle ilgili değildir; yalnızca metabolizma hesabı içindir.',
+                                ),
+                                (
+                                  'Promil (‰) Nedir?',
+                                  'Promil, binde bir anlamına gelir. Kanda 1‰ alkol, her 1.000 gram kanda 1 gram alkol demektir. '
+                                      'Yüzde yerine binde kullanılır çünkü kan alkol seviyeleri çok küçük miktarlarla ifade edilir.',
+                                ),
+                                (
+                                  'Yasal Uyarı',
+                                  'Bu uygulama yalnızca bilgilendirme amaçlıdır. Sunulan değerler tahminidir; gerçek kan alkol '
+                                      'seviyeniz farklılık gösterebilir. Yaş, ilaç kullanımı, tokluk durumu ve genetik faktörler her '
+                                      'bireyin metabolizmasını etkiler. Yasal bir karar öncesinde onaylı bir alkol ölçer kullanınız. '
+                                      'Geliştirici ve uygulama, bu bilgiler doğrultusunda alınan kararlardan sorumlu tutulamaz.',
+                                ),
                               ],
                               'az': [
-                                ('Promilaj Nədir?',
-                                    'Promilaj, Widmark düsturu ilə qan spirt səviyyənizi (BAC) hesablayan bir vasitədir. '
-                                    'Ölkənizdəki qanuni limitləri göstərir və avtomobil sürə biləcəyiniz vaxtı təxmin edir.'),
-                                ('Diqqət Edin',
-                                    'Spirt içkisi içdikdən sonra avtomobil sürmə. Bu tətbiq alkomat cihazının əvəzini tutmur; '
-                                    'yalnız təxmini hesablama təqdim edir. Əmin olmaq üçün həmişə gözləyin.'),
-                                ('Məkan İcazəsi',
-                                    'Ölkənizə görə qanuni spirt limitini avtomatik göstərmək üçün məkanınıza ehtiyacımız var. '
-                                    'Məkan məlumatlarınız cihazınızda qalır, heç bir serverə göndərilmir.'),
-                                ('Niyə Bu Məlumatları İstəyirik?',
-                                    'Çəki, boy və içdiyiniz içkinin növü qan spirt səviyyənizə birbaşa təsir edir. '
-                                    'Daxil etdiyiniz məlumatlar yalnız hesablama məqsədilə istifadə olunur, saxlanmır və paylaşılmır.'),
-                                ('Bioloji Cins mi, Gender mi?',
-                                    'Widmark düsturu bədəndəki su və yağ nisbətinə əsaslandığından bioloji cinsi (kişi/qadın) soruşur. '
-                                    'Bu sual cinsiyet kimliyinizlə əlaqəli deyil; yalnız metabolizm hesabı üçündür.'),
-                                ('Promil (‰) Nədir?',
-                                    'Promil mində bir deməkdir. Qanda 1‰ spirt hər 1.000 qram qanda 1 qram spirt deməkdir. '
-                                    'Faiz əvəzinə mində istifadə olunur, çünki qan spirt səviyyələri çox kiçik miqdarlarla ifadə edilir.'),
-                                ('Hüquqi Xəbərdarlıq',
-                                    'Bu tətbiq yalnız məlumat məqsədilə nəzərdə tutulmuşdur. Təqdim olunan dəyərlər təxminidir; '
-                                    'real qan spirt səviyyəniz fərqli ola bilər. Yaş, dərman istifadəsi, toxluq vəziyyəti və genetik '
-                                    'amillər hər fərdin metabolizminə təsir edir. Hər hansı hüquqi qərar əvvəl sertifikatlı alkomat '
-                                    'istifadə edin. Proqramçı və tətbiq bu məlumatlar əsasında qəbul edilən qərarlardan məsul tutula bilməz.'),
+                                (
+                                  'Promilaj Nədir?',
+                                  'Promilaj, Widmark düsturu ilə qan spirt səviyyənizi (BAC) hesablayan bir vasitədir. '
+                                      'Ölkənizdəki qanuni limitləri göstərir və avtomobil sürə biləcəyiniz vaxtı təxmin edir.',
+                                ),
+                                (
+                                  'Diqqət Edin',
+                                  'Spirt içkisi içdikdən sonra avtomobil sürmə. Bu tətbiq alkomat cihazının əvəzini tutmur; '
+                                      'yalnız təxmini hesablama təqdim edir. Əmin olmaq üçün həmişə gözləyin.',
+                                ),
+                                (
+                                  'Məkan İcazəsi',
+                                  'Ölkənizə görə qanuni spirt limitini avtomatik göstərmək üçün məkanınıza ehtiyacımız var. '
+                                      'Məkan məlumatlarınız cihazınızda qalır, heç bir serverə göndərilmir.',
+                                ),
+                                (
+                                  'Niyə Bu Məlumatları İstəyirik?',
+                                  'Çəki, boy və içdiyiniz içkinin növü qan spirt səviyyənizə birbaşa təsir edir. '
+                                      'Daxil etdiyiniz məlumatlar yalnız hesablama məqsədilə istifadə olunur, saxlanmır və paylaşılmır.',
+                                ),
+                                (
+                                  'Bioloji Cins mi, Gender mi?',
+                                  'Widmark düsturu bədəndəki su və yağ nisbətinə əsaslandığından bioloji cinsi (kişi/qadın) soruşur. '
+                                      'Bu sual cinsiyet kimliyinizlə əlaqəli deyil; yalnız metabolizm hesabı üçündür.',
+                                ),
+                                (
+                                  'Promil (‰) Nədir?',
+                                  'Promil mində bir deməkdir. Qanda 1‰ spirt hər 1.000 qram qanda 1 qram spirt deməkdir. '
+                                      'Faiz əvəzinə mində istifadə olunur, çünki qan spirt səviyyələri çox kiçik miqdarlarla ifadə edilir.',
+                                ),
+                                (
+                                  'Hüquqi Xəbərdarlıq',
+                                  'Bu tətbiq yalnız məlumat məqsədilə nəzərdə tutulmuşdur. Təqdim olunan dəyərlər təxminidir; '
+                                      'real qan spirt səviyyəniz fərqli ola bilər. Yaş, dərman istifadəsi, toxluq vəziyyəti və genetik '
+                                      'amillər hər fərdin metabolizminə təsir edir. Hər hansı hüquqi qərar əvvəl sertifikatlı alkomat '
+                                      'istifadə edin. Proqramçı və tətbiq bu məlumatlar əsasında qəbul edilən qərarlardan məsul tutula bilməz.',
+                                ),
                               ],
                               'en': [
-                                ('What Is Promilaj?',
-                                    'Promilaj is a tool that estimates your blood alcohol concentration (BAC) using the Widmark formula. '
-                                    'It shows the legal limits for your country and estimates when you can safely drive again.'),
-                                ('Please Note',
-                                    'Never drive under the influence of alcohol. This app is not a substitute for a breathalyzer; '
-                                    'it provides estimates only. When in doubt, always wait.'),
-                                ('Location Permission',
-                                    'We use your location to automatically display the legal alcohol limit for your country. '
-                                    'Your location stays on your device and is never sent to any server.'),
-                                ('Why Do We Ask for This Information?',
-                                    'Your weight, height, and the type of drink you consumed directly affect your blood alcohol level. '
-                                    'The information you enter is used solely for calculation and is never stored or shared.'),
-                                ('Biological Sex vs. Gender',
-                                    'The Widmark formula is based on body water and fat ratios, so it asks for your biological sex '
-                                    '(male/female). This question is not about your gender identity; it is used only for metabolic calculation.'),
-                                ('What Is Promille (‰)?',
-                                    'Promille means per thousand. A BAC of 1‰ means 1 gram of alcohol per 1,000 grams of blood. '
-                                    'Promille is used instead of percent because blood alcohol levels are expressed in very small amounts.'),
-                                ('Legal Disclaimer',
-                                    'This app is for informational purposes only. The values provided are estimates; your actual blood '
-                                    'alcohol level may differ. Age, medication, food intake, and genetic factors affect each individual\'s '
-                                    'metabolism differently. Use a certified breathalyzer before making any legal decision. The developer '
-                                    'and this application cannot be held responsible for any decisions made based on this information.'),
+                                (
+                                  'What Is Promilaj?',
+                                  'Promilaj is a tool that estimates your blood alcohol concentration (BAC) using the Widmark formula. '
+                                      'It shows the legal limits for your country and estimates when you can safely drive again.',
+                                ),
+                                (
+                                  'Please Note',
+                                  'Never drive under the influence of alcohol. This app is not a substitute for a breathalyzer; '
+                                      'it provides estimates only. When in doubt, always wait.',
+                                ),
+                                (
+                                  'Location Permission',
+                                  'We use your location to automatically display the legal alcohol limit for your country. '
+                                      'Your location stays on your device and is never sent to any server.',
+                                ),
+                                (
+                                  'Why Do We Ask for This Information?',
+                                  'Your weight, height, and the type of drink you consumed directly affect your blood alcohol level. '
+                                      'The information you enter is used solely for calculation and is never stored or shared.',
+                                ),
+                                (
+                                  'Biological Sex vs. Gender',
+                                  'The Widmark formula is based on body water and fat ratios, so it asks for your biological sex '
+                                      '(male/female). This question is not about your gender identity; it is used only for metabolic calculation.',
+                                ),
+                                (
+                                  'What Is Promille (‰)?',
+                                  'Promille means per thousand. A BAC of 1‰ means 1 gram of alcohol per 1,000 grams of blood. '
+                                      'Promille is used instead of percent because blood alcohol levels are expressed in very small amounts.',
+                                ),
+                                (
+                                  'Legal Disclaimer',
+                                  'This app is for informational purposes only. The values provided are estimates; your actual blood '
+                                      'alcohol level may differ. Age, medication, food intake, and genetic factors affect each individual\'s '
+                                      'metabolism differently. Use a certified breathalyzer before making any legal decision. The developer '
+                                      'and this application cannot be held responsible for any decisions made based on this information.',
+                                ),
                               ],
                             };
 
@@ -196,7 +245,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 builder: (_, scrollController) => Container(
                                   decoration: const BoxDecoration(
                                     color: AppColors.surface,
-                                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
                                   ),
                                   child: Column(
                                     children: [
@@ -205,19 +256,29 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                         width: 40,
                                         height: 4,
                                         decoration: BoxDecoration(
-                                          color: AppColors.textSecondary.withOpacity(0.4),
-                                          borderRadius: BorderRadius.circular(2),
+                                          color: AppColors.textSecondary
+                                              .withOpacity(0.4),
+                                          borderRadius: BorderRadius.circular(
+                                            2,
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 16),
                                       Expanded(
                                         child: ListView.separated(
                                           controller: scrollController,
-                                          padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
+                                          padding: const EdgeInsets.fromLTRB(
+                                            24,
+                                            0,
+                                            24,
+                                            32,
+                                          ),
                                           itemCount: items.length,
-                                          separatorBuilder: (_, __) => const SizedBox(height: 20),
+                                          separatorBuilder: (_, __) =>
+                                              const SizedBox(height: 20),
                                           itemBuilder: (_, i) => Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 items[i].$1,
@@ -225,8 +286,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                                     .textTheme
                                                     .titleMedium
                                                     ?.copyWith(
-                                                      color: AppColors.textPrimary,
-                                                      fontWeight: FontWeight.bold,
+                                                      color:
+                                                          AppColors.textPrimary,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       letterSpacing: 0.3,
                                                     ),
                                               ),
@@ -237,7 +300,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                                     .textTheme
                                                     .bodyMedium
                                                     ?.copyWith(
-                                                      color: AppColors.textPrimary
+                                                      color: AppColors
+                                                          .textPrimary
                                                           .withOpacity(0.75),
                                                       height: 1.6,
                                                     ),
@@ -256,26 +320,33 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         // Misafir profil ekleme butonu — sadece B yokken
                         if (!vm.hasGuestProfile)
                           IconButton(
-                            icon: const Icon(CupertinoIcons.person_add,
-                                color: AppColors.textSecondary),
+                            icon: const Icon(
+                              CupertinoIcons.person_add,
+                              color: AppColors.textSecondary,
+                            ),
                             tooltip: l10n.addGuestProfile,
                             onPressed: () => _openAddGuestProfile(vm),
                           ),
                         // Contact the builders butonu
                         IconButton(
-                          icon: const Icon(CupertinoIcons.bubble_left,
-                              color: AppColors.textSecondary),
+                          icon: const Icon(
+                            CupertinoIcons.bubble_left,
+                            color: AppColors.textSecondary,
+                          ),
                           tooltip: 'Contact the Builders',
                           onPressed: () => _showContactBuildersPopup(context),
                         ),
                         // Ayarlar butonu
                         IconButton(
-                          icon: const Icon(CupertinoIcons.gear,
-                              color: AppColors.textSecondary),
+                          icon: const Icon(
+                            CupertinoIcons.gear,
+                            color: AppColors.textSecondary,
+                          ),
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => const SettingsView()),
+                              builder: (_) => const SettingsView(),
+                            ),
                           ),
                         ),
                       ],
@@ -322,7 +393,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         // Geri sayımlar
                         if (!vm.isSober) ...[
                           Visibility(
-                            visible: ref.watch(settingsViewModelProvider).showBacCounter,
+                            visible: ref
+                                .watch(settingsViewModelProvider)
+                                .showBacCounter,
                             maintainState: true,
                             maintainAnimation: true,
                             maintainSize: true,
@@ -339,7 +412,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           ),
                           const SizedBox(height: 12),
                           Visibility(
-                            visible: ref.watch(settingsViewModelProvider).showBacCounter,
+                            visible: ref
+                                .watch(settingsViewModelProvider)
+                                .showBacCounter,
                             maintainState: true,
                             maintainAnimation: true,
                             maintainSize: true,
@@ -361,7 +436,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  _getVehicleEmoji(vm.activeProfile?.vehicleType),
+                                  _getVehicleEmoji(
+                                    vm.activeProfile?.vehicleType,
+                                  ),
                                   style: const TextStyle(fontSize: 16),
                                 ),
                                 const SizedBox(width: 8),
@@ -390,21 +467,59 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            // Sıfırla
-                            Expanded(
-                              child: SizedBox(
-                                height: 56,
-                                child: GlassButton(
-                                  onPressed: () => _confirmReset(vm, l10n),
-                                  child: Icon(
-                                    CupertinoIcons.refresh,
-                                    color: AppColors.textSecondary,
+                            const SizedBox(width: 8),
+                            SizedBox(
+                              width: 48,
+                              height: 56,
+                              child: IconButton.outlined(
+                                icon: const Icon(
+                                  CupertinoIcons.arrow_uturn_left,
+                                ),
+                                tooltip: 'Geri Al',
+                                style: IconButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
                                   ),
                                 ),
+                                onPressed: () => _confirmUndoLast(vm, l10n),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            SizedBox(
+                              width: 48,
+                              height: 56,
+                              child: IconButton.outlined(
+                                icon: const Icon(CupertinoIcons.refresh),
+                                tooltip: 'Sıfırla',
+                                style: IconButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                ),
+                                onPressed: () => _confirmReset(vm, l10n),
                               ),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: OutlinedButton.icon(
+                            icon: const Icon(CupertinoIcons.list_bullet),
+                            label: Text(_drinkListLabel()),
+                            onPressed: () =>
+                                _showDrinkHistory(context, vm, l10n),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppColors.textPrimary,
+                              side: BorderSide(
+                                color: AppColors.textSecondary.withOpacity(0.3),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 12),
 
@@ -415,13 +530,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(CupertinoIcons.info,
-                                  color: AppColors.info, size: 18),
+                              const Icon(
+                                CupertinoIcons.info,
+                                color: AppColors.info,
+                                size: 18,
+                              ),
                               const SizedBox(width: 8),
                               Text(
                                 l10n.legalInfoButton,
-                                style: const TextStyle(
-                                    color: AppColors.info),
+                                style: const TextStyle(color: AppColors.info),
                               ),
                             ],
                           ),
@@ -436,13 +553,17 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(CupertinoIcons.person_badge_minus,
-                                    color: AppColors.error, size: 18),
+                                const Icon(
+                                  CupertinoIcons.person_badge_minus,
+                                  color: AppColors.error,
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 8),
                                 Text(
                                   l10n.removeGuestProfile,
                                   style: const TextStyle(
-                                      color: AppColors.error),
+                                    color: AppColors.error,
+                                  ),
                                 ),
                               ],
                             ),
@@ -465,9 +586,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
   String _getVehicleEmoji(VehicleType? type) {
     if (type == null) return '🚗';
     switch (type) {
-      case VehicleType.car: return '🚗';
-      case VehicleType.motorcycle: return '🏍';
-      case VehicleType.truckOrBus: return '🚛';
+      case VehicleType.car:
+        return '🚗';
+      case VehicleType.motorcycle:
+        return '🏍';
+      case VehicleType.truckOrBus:
+        return '🚛';
     }
   }
 
@@ -490,9 +614,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => AddDrinkView(
-        activeProfileId: vm.activeProfileId,
-      ),
+      builder: (_) => AddDrinkView(activeProfileId: vm.activeProfileId),
     );
 
     if (entry != null) {
@@ -608,9 +730,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   Text(
                     l.title,
                     style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   // Full Name
@@ -624,7 +746,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       hintStyle: TextStyle(
                         color: AppColors.textSecondary.withOpacity(0.6),
                       ),
-                      counterStyle: const TextStyle(color: AppColors.textSecondary),
+                      counterStyle: const TextStyle(
+                        color: AppColors.textSecondary,
+                      ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(
@@ -650,7 +774,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       hintStyle: TextStyle(
                         color: AppColors.textSecondary.withOpacity(0.6),
                       ),
-                      counterStyle: const TextStyle(color: AppColors.textSecondary),
+                      counterStyle: const TextStyle(
+                        color: AppColors.textSecondary,
+                      ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(
@@ -677,7 +803,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       hintStyle: TextStyle(
                         color: AppColors.textSecondary.withOpacity(0.6),
                       ),
-                      counterStyle: const TextStyle(color: AppColors.textSecondary),
+                      counterStyle: const TextStyle(
+                        color: AppColors.textSecondary,
+                      ),
                       alignLabelWithHint: true,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -720,7 +848,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 setState(() => errorText = l.validationName);
                                 return;
                               }
-                              if (!email.contains('@') || !email.contains('.')) {
+                              if (!email.contains('@') ||
+                                  !email.contains('.')) {
                                 setState(() => errorText = l.validationEmail);
                                 return;
                               }
@@ -739,9 +868,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   Uri.parse(
                                     'https://api.emailjs.com/api/v1.0/email/send',
                                   ),
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                  },
+                                  headers: {'Content-Type': 'application/json'},
                                   body: jsonEncode({
                                     'service_id': 'service_hms2up2',
                                     'template_id': 'template_vyl17rf',
@@ -797,9 +924,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.surface,
         title: Text(l10n.resetTitle),
-        content: Text(
-          l10n.resetConfirmFor(profileLabel),
-        ),
+        content: Text(l10n.resetConfirmFor(profileLabel)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -810,10 +935,225 @@ class _HomeViewState extends ConsumerState<HomeView> {
               vm.resetSession();
               Navigator.pop(ctx);
             },
-            child: Text(l10n.reset,
-                style: const TextStyle(color: AppColors.error)),
+            child: Text(
+              l10n.reset,
+              style: const TextStyle(color: AppColors.error),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _confirmUndoLast(HomeViewModel vm, AppLocalizations l10n) {
+    final lang = ref.read(settingsViewModelProvider).selectedLanguage;
+
+    String title() {
+      if (lang == 'tr') return 'Son İçkiyi Sil';
+      if (lang == 'az') return 'Son İçkini Sil';
+      return 'Remove Last Drink';
+    }
+
+    String body() {
+      if (lang == 'tr') return 'Son içkiyi silmek istediğinize emin misiniz?';
+      if (lang == 'az') return 'Son içkini silmək istədiyinizdən əminsiniz?';
+      return 'Are you sure you want to remove the last drink?';
+    }
+
+    String cancel() {
+      if (lang == 'tr') return 'İptal';
+      if (lang == 'az') return 'Ləğv et';
+      return 'Cancel';
+    }
+
+    String confirm() {
+      if (lang == 'tr') return 'Eminim, Sil';
+      if (lang == 'az') return 'Əminəm, Sil';
+      return 'Yes, Delete';
+    }
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        title: Text(title()),
+        content: Text(body()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(cancel()),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              vm.removeLastEntry();
+            },
+            child: Text(
+              confirm(),
+              style: const TextStyle(color: Colors.redAccent),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _drinkListLabel() {
+    final lang = ref.read(settingsViewModelProvider).selectedLanguage;
+    if (lang == 'tr') return 'İçtiklerim';
+    if (lang == 'az') return 'İçdiklərim';
+    return 'My Drinks';
+  }
+
+  void _showDrinkHistory(
+    BuildContext context,
+    HomeViewModel vm,
+    AppLocalizations l10n,
+  ) {
+    final lang = ref.read(settingsViewModelProvider).selectedLanguage;
+
+    String deleteTitle() {
+      if (lang == 'tr') return 'İçkiyi Sil';
+      if (lang == 'az') return 'İçkini Sil';
+      return 'Delete Drink';
+    }
+
+    String deleteConfirm() {
+      if (lang == 'tr') return 'Bu içkiyi silmek istediğinize emin misiniz?';
+      if (lang == 'az') return 'Bu içkini silmək istədiyinizdən əminsiniz?';
+      return 'Are you sure you want to delete this drink?';
+    }
+
+    String cancelLabel() {
+      if (lang == 'tr') return 'İptal';
+      if (lang == 'az') return 'Ləğv et';
+      return 'Cancel';
+    }
+
+    String confirmLabel() {
+      if (lang == 'tr') return 'Eminim, Sil';
+      if (lang == 'az') return 'Əminəm, Sil';
+      return 'Yes, Delete';
+    }
+
+    String emptyLabel() {
+      if (lang == 'tr') return 'Henüz içki eklenmedi.';
+      if (lang == 'az') return 'Hələ içki əlavə edilməyib.';
+      return 'No drinks added yet.';
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setModalState) {
+          final entries = List.of(vm.entries)
+            ..sort((a, b) => a.consumedAt.compareTo(b.consumedAt));
+
+          return DraggableScrollableSheet(
+            initialChildSize: 0.6,
+            minChildSize: 0.4,
+            maxChildSize: 0.92,
+            expand: false,
+            builder: (_, scrollController) => Container(
+              decoration: const BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 12),
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: AppColors.textSecondary.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: entries.isEmpty
+                        ? Center(
+                            child: Text(
+                              emptyLabel(),
+                              style: TextStyle(color: AppColors.textSecondary),
+                            ),
+                          )
+                        : ListView.separated(
+                            controller: scrollController,
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                            itemCount: entries.length,
+                            separatorBuilder: (_, __) =>
+                                const Divider(height: 1),
+                            itemBuilder: (_, i) {
+                              final entry = entries[i];
+                              final time =
+                                  '${entry.consumedAt.hour.toString().padLeft(2, '0')}:${entry.consumedAt.minute.toString().padLeft(2, '0')}';
+                              return ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                title: Text(
+                                  '${entry.brandName}  •  ${entry.volumeMl.toStringAsFixed(0)} ml  •  ${entry.abv.toStringAsFixed(1)}%',
+                                  style: const TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  time,
+                                  style: const TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    CupertinoIcons.xmark_circle,
+                                    color: Colors.redAccent,
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: ctx,
+                                      builder: (dCtx) => AlertDialog(
+                                        backgroundColor: AppColors.surface,
+                                        title: Text(deleteTitle()),
+                                        content: Text(deleteConfirm()),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(dCtx),
+                                            child: Text(cancelLabel()),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(dCtx);
+                                              vm.removeEntry(entry.id);
+                                              setModalState(() {});
+                                            },
+                                            child: Text(
+                                              confirmLabel(),
+                                              style: const TextStyle(
+                                                color: Colors.redAccent,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -835,8 +1175,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
               vm.removeGuestProfile();
               Navigator.pop(ctx);
             },
-            child: Text(l10n.reset,
-                style: const TextStyle(color: AppColors.error)),
+            child: Text(
+              l10n.reset,
+              style: const TextStyle(color: AppColors.error),
+            ),
           ),
         ],
       ),
@@ -846,9 +1188,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void _openLegalInfo(dynamic vm, AppLocalizations l10n) async {
     // Sadece izin gerçekten reddedilmişse snackbar göster
     if (vm.isLocationDenied) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.legalInfoNoLocation)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.legalInfoNoLocation)));
       return;
     }
 

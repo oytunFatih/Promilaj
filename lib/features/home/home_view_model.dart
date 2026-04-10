@@ -215,6 +215,25 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Belirli ID'ye sahip içkiyi her iki listeden de sil
+  void removeEntry(String entryId) {
+    _entriesA = _entriesA.where((e) => e.id != entryId).toList();
+    _entriesB = _entriesB.where((e) => e.id != entryId).toList();
+    _recalculateBac();
+    notifyListeners();
+  }
+
+  /// Aktif profilin son içkisini sil
+  void removeLastEntry() {
+    if (_activeProfileId == 'A' && _entriesA.isNotEmpty) {
+      _entriesA = _entriesA.sublist(0, _entriesA.length - 1);
+    } else if (_activeProfileId == 'B' && _entriesB.isNotEmpty) {
+      _entriesB = _entriesB.sublist(0, _entriesB.length - 1);
+    }
+    _recalculateBac();
+    notifyListeners();
+  }
+
   /// Aktif profilin kayıtlarını sıfırla
   Future<void> resetSession() async {
     if (_activeProfileId == 'A') {

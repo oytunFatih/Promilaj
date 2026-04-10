@@ -25,6 +25,12 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
   final _weightController = TextEditingController();
   final _ageController = TextEditingController();
 
+  BiologicalSex? _draftSex;
+  VehicleType? _draftVehicleType;
+  String? _draftLanguage;
+  String? _draftCountryCode;
+  bool? _draftShowBacCounter;
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +41,14 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
         _heightController.text = vm.profile!.heightCm.round().toString();
         _weightController.text = vm.profile!.weightKg.round().toString();
         _ageController.text = vm.profile!.age.toString();
+
+        setState(() {
+          _draftSex = vm.profile?.sex ?? BiologicalSex.male;
+          _draftVehicleType = vm.profile?.vehicleType ?? VehicleType.car;
+          _draftLanguage = vm.selectedLanguage;
+          _draftCountryCode = vm.selectedCountryCode;
+          _draftShowBacCounter = vm.showBacCounter;
+        });
       }
     });
   }
@@ -59,8 +73,13 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
       );
     }
 
-    return Scaffold(
-      body: Container(
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        // drafts are local — no cleanup needed, just allow pop
+      },
+      child: Scaffold(
+        body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -123,10 +142,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                                       .titleMedium),
                               const SizedBox(height: 12),
                               BiologicalSexSelector(
-                                selectedSex: vm.profile?.sex ?? BiologicalSex.male,
-                                onChanged: (val) {
-                                  vm.updateProfile(sex: val);
-                                },
+                                selectedSex: _draftSex ?? vm.profile?.sex ?? BiologicalSex.male,
+                                onChanged: (val) => setState(() => _draftSex = val),
                               ),
                               const SizedBox(height: 24),
                               Text(l10n.vehicleTypeSectionLabel,
@@ -135,11 +152,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                                       .titleMedium),
                               const SizedBox(height: 12),
                               VehiclePicker(
-                                selectedVehicle: vm.profile?.vehicleType ?? VehicleType.car,
-                                onChanged: (type) async {
-                                  await vm.updateProfile(vehicleType: type);
-                                  ref.read(homeViewModelProvider).refreshActiveProfile();
-                                },
+                                selectedVehicle: _draftVehicleType ?? vm.profile?.vehicleType ?? VehicleType.car,
+                                onChanged: (type) => setState(() => _draftVehicleType = type),
                               ),
                             ],
                           ),
@@ -175,10 +189,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                               ),
                               const SizedBox(height: 12),
                               LanguagePickerList(
-                                selectedLanguage: vm.selectedLanguage,
-                                onLanguageSelected: (langCode) {
-                                  vm.setLanguage(langCode);
-                                },
+                                selectedLanguage: _draftLanguage ?? vm.selectedLanguage,
+                                onLanguageSelected: (langCode) => setState(() => _draftLanguage = langCode),
                               ),
                             ],
                           ),
@@ -197,13 +209,21 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                               ),
                               const SizedBox(height: 12),
                               CountryPickerList(
-                                selectedCountryCode: vm.selectedCountryCode,
-                                onCountrySelected: (code) async {
-                                  await vm.setCountryCode(code);
-                                  ref.read(homeViewModelProvider).refreshActiveProfile();
-                                },
+                                selectedCountryCode: _draftCountryCode ?? vm.selectedCountryCode,
+                                onCountrySelected: (code) => setState(() => _draftCountryCode = code),
                               ),
                             ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        GlassCard(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: SwitchListTile(
+                            value: _draftShowBacCounter ?? vm.showBacCounter,
+                            onChanged: (val) => setState(() => _draftShowBacCounter = val),
+                            title: Text(_counterLabel(vm.selectedLanguage)),
+                            subtitle: Text(_counterSubLabel(vm.selectedLanguage)),
+                            activeColor: AppColors.accent,
                           ),
                         ),
                       ],
@@ -214,7 +234,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildField(
@@ -230,12 +250,44 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
   }
 
 
+  String _counterLabel(String lang) {
+    if (lang == 'tr') return 'Sayacı Göster';
+    if (lang == 'az') return 'Sayğacı Göstər';
+    return 'Show Counter';
+  }
+
+  String _counterSubLabel(String lang) {
+    if (lang == 'tr') return 'Kapalıyken sayaç arka planda çalışmaya devam eder';
+    if (lang == 'az') return 'Söndürüldükdə sayğac arxa planda işləməyə davam edir';
+    return 'Counter keeps running in the background when off';
+  }
+
   Future<void> _saveProfile() async {
     final vm = ref.read(settingsViewModelProvider);
     final h = double.tryParse(_heightController.text);
     final w = double.tryParse(_weightController.text);
     final a = int.tryParse(_ageController.text);
-    await vm.updateProfile(heightCm: h, weightKg: w, age: a);
+    
+    await vm.updateProfile(
+      heightCm: h,
+      weightKg: w,
+      age: a,
+      sex: _draftSex,
+      vehicleType: _draftVehicleType,
+    );
+
+    if (_draftLanguage != null) {
+      await vm.setLanguage(_draftLanguage!);
+    }
+    if (_draftCountryCode != null) {
+      await vm.setCountryCode(_draftCountryCode);
+    }
+    if (_draftShowBacCounter != null) {
+      await vm.setShowBacCounter(_draftShowBacCounter!);
+    }
+
+    ref.read(homeViewModelProvider).refreshActiveProfile();
+
     if (mounted) Navigator.pop(context);
   }
 }

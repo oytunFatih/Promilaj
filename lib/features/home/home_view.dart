@@ -321,22 +321,34 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
                         // Geri sayımlar
                         if (!vm.isSober) ...[
-                          CountdownWidget(
-                            label: l10n.timeToLegalLimit,
-                            time: vm.isWithinLegalLimit
-                                ? '✓ ${l10n.withinLegalLimit}'
-                                : vm.timeToLegal,
-                            icon: CupertinoIcons.car,
-                            accentColor: vm.isWithinLegalLimit
-                                ? AppColors.bacSafe
-                                : AppColors.bacCaution,
+                          Visibility(
+                            visible: ref.watch(settingsViewModelProvider).showBacCounter,
+                            maintainState: true,
+                            maintainAnimation: true,
+                            maintainSize: true,
+                            child: CountdownWidget(
+                              label: l10n.timeToLegalLimit,
+                              time: vm.isWithinLegalLimit
+                                  ? '✓ ${l10n.withinLegalLimit}'
+                                  : vm.timeToLegal,
+                              icon: CupertinoIcons.car,
+                              accentColor: vm.isWithinLegalLimit
+                                  ? AppColors.bacSafe
+                                  : AppColors.bacCaution,
+                            ),
                           ),
                           const SizedBox(height: 12),
-                          CountdownWidget(
-                            label: l10n.timeToZero,
-                            time: vm.timeToZero,
-                            icon: CupertinoIcons.clock,
-                            accentColor: AppColors.accent,
+                          Visibility(
+                            visible: ref.watch(settingsViewModelProvider).showBacCounter,
+                            maintainState: true,
+                            maintainAnimation: true,
+                            maintainSize: true,
+                            child: CountdownWidget(
+                              label: l10n.timeToZero,
+                              time: vm.timeToZero,
+                              icon: CupertinoIcons.clock,
+                              accentColor: AppColors.accent,
+                            ),
                           ),
                           const SizedBox(height: 12),
                         ],

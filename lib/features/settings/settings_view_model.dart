@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:promilaj/data/models/user_profile.dart'; // Still needed for BiologicalSex
 import 'package:promilaj/data/models/session_profile.dart';
 import 'package:promilaj/data/repositories/user_profile_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Ayarlar ekranı ViewModel'i.
 /// Profil düzenleme (Sadece Profil A) ve dil/ülke seçimi yönetimi.
@@ -11,10 +12,12 @@ class SettingsViewModel extends ChangeNotifier {
   SettingsViewModel(this._userRepo);
 
   SessionProfile? _profile;
+  bool _showBacCounter = true;
   bool _isLoading = true;
   bool _isSaving = false;
   Locale? _selectedLocale;
 
+  bool get showBacCounter => _showBacCounter;
   SessionProfile? get profile => _profile;
   bool get isLoading => _isLoading;
   bool get isSaving => _isSaving;
@@ -26,6 +29,9 @@ class SettingsViewModel extends ChangeNotifier {
   Future<void> initialize() async {
     _isLoading = true;
     try {
+      final prefs = await SharedPreferences.getInstance();
+      _showBacCounter = prefs.getBool('show_bac_counter') ?? true;
+      
       _profile = await _userRepo.loadSessionProfile('A');
 
       // Kayıtlı dili locale olarak uygula
@@ -95,6 +101,13 @@ class SettingsViewModel extends ChangeNotifier {
   /// Sadece locale güncelle (eski uyumluluk — SettingsView'dan çağrılır)
   void setLocale(Locale locale) {
     _selectedLocale = locale;
+    notifyListeners();
+  }
+
+  Future<void> setShowBacCounter(bool value) async {
+    _showBacCounter = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('show_bac_counter', value);
     notifyListeners();
   }
 }
